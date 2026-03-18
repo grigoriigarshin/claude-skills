@@ -37,12 +37,15 @@ The skill activates when a user mentions terms like: Metaflow, MLflow, GMLP, Kub
 Symlink the skill into your personal or project skills directory:
 
 ```bash
-# Personal (all projects)
-ln -s ~/claude-skills/skills/gmlp ~/.claude/skills/gmlp
+cd claude-skills
 
-# Or project-specific
+# Personal (all projects)
+mkdir -p ~/.claude/skills
+ln -s "$(pwd)/skills/gmlp" ~/.claude/skills/gmlp
+
+# Or project-specific (run from your target project)
 mkdir -p .claude/skills
-ln -s ~/claude-skills/skills/gmlp .claude/skills/gmlp
+ln -s /absolute/path/to/claude-skills/skills/gmlp .claude/skills/gmlp
 ```
 
 See the [main README](../README.md) for full installation instructions.

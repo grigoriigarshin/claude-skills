@@ -11,6 +11,7 @@ Skills are curated knowledge bundles that extend Claude Code with expertise on s
 | Skill | Description | Docs |
 |-------|-------------|------|
 | [gmlp](skills/gmlp/) | Delivery Hero's Global Machine Learning Platform — Metaflow, MLflow, Argo Workflows, GKE clusters, and more | [docs/gmlp.md](docs/gmlp.md) |
+| [arch-report](skills/arch-report/) | Generates a high-level `ARCHITECTURE.md` for Python ML/GenAI repositories — system overview, components, mermaid diagrams, tech stack, and deployment | [docs/arch-report.md](docs/arch-report.md) |
 
 ## Installation
 
@@ -96,10 +97,13 @@ claude-skills/
 ├── CLAUDE.md              # Instructions for Claude Code when working on this repo
 ├── README.md
 ├── docs/                  # Skill documentation for humans
-│   └── gmlp.md
+│   ├── gmlp.md
+│   └── arch-report.md
 ├── materials/             # Source docs used to build skills (gitignored)
 └── skills/                # Skill definitions
-    └── gmlp/
-        ├── SKILL.md       # Skill entry point (frontmatter + overview)
-        └── references/    # Detailed topic files loaded on-demand
+    ├── gmlp/
+    │   ├── SKILL.md       # Skill entry point (frontmatter + overview)
+    │   └── references/    # Detailed topic files loaded on-demand
+    └── arch-report/
+        └── SKILL.md       # Self-contained skill (no references needed)
 ```
