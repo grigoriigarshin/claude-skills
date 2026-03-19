@@ -16,7 +16,7 @@ Read the matching reference file BEFORE answering. Multiple files may be needed.
 
 | Topic keywords | Reference file |
 |---|---|
-| cluster, namespace, service account, stamp, service URL, backend app, GCP service account, `get-credentials`, `kubectl`, vertical | `references/clusters-and-namespaces.md` |
+| cluster, namespace, service account, stamp, service URL, backend app, GCP service account, `get-credentials`, `kubectl`, vertical, staging to production, production cluster, switch environment, migrate to prod | `references/clusters-and-namespaces.md` |
 | `.metaflowconfig.env`, environment variable, local run, K8s run config, cost label, secret, `METAFLOW_` | `references/metaflow-config.md` |
 | MLflow, tracking URI, experiment, model registry, nested run, model promotion, `mlflow.` | `references/mlflow-guide.md` |
 | SDK, CLI, `gmlp_cli`, `@kubernetes_optional`, `@schedule_optional`, serving, OTel, GMLP Info card, `gmlp_metaflow`, install package, Artifact Registry, Argo deploy, Argo trigger | `references/sdk-reference.md` |
@@ -63,6 +63,13 @@ If unclear which cluster type, ask the user. Shared cluster is the default for n
 1. Add K8s-specific vars to `.metaflowconfig.env` → read `references/metaflow-config.md`
 2. `export $(cat .metaflowconfig.env)`
 3. `poetry run python my_flow.py run --with kubernetes`
+
+### Switching from staging to production
+1. Read `references/clusters-and-namespaces.md` — see "Staging to Production Migration" section for the full variable-by-variable checklist
+2. Use the Environment Stamps table to find the production stamp for the vertical
+3. Use the Service URLs tables for production external URLs
+4. Discover production cluster name: `gcloud container clusters list --project {prod_project} --format="value(name)"`
+5. Connect: `gcloud container clusters get-credentials {cluster_name} --region us-east1 --project {prod_project}`
 
 ### MLflow tracking setup
 1. `poetry add mlflow google-cloud-storage`

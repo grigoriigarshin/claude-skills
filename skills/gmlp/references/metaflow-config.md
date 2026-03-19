@@ -87,14 +87,16 @@ To generate a config for other entities: replace namespace, service account, and
 |---|---|
 | Shared Staging | `http://gmlp-metaflow-mdai-metadata-svc.gmlp-metaflow.svc.cluster.local:8080/metaflow-metadata` |
 | Shared Production | `http://gmlp-metaflow-8hs7-metadata-svc.gmlp-metaflow.svc.cluster.local:8080/metaflow-metadata` |
-| QC Dedicated | `http://gmlp-qc-metaflow-nuts-metadata-svc.gmlp-qc-metaflow.svc.cluster.local:8080/metaflow-metadata` |
-| Consumer Dedicated | `http://gmlp-consumer-metaflow-8h80-metadata-svc.gmlp-consumer-metaflow.svc.cluster.local:8080/metaflow-metadata` |
-| FinTech Dedicated | `http://gmlp-fintech-metaflow-v58i-metadata-svc.gmlp-fintech-metaflow.svc.cluster.local:8080/metaflow-metadata` |
-| Logistics Dedicated | `http://gmlp-logistics-metaflow-35t3-metadata-svc.gmlp-logistics-metaflow.svc.cluster.local:8080/metaflow-metadata` |
-| Glovo Dedicated | `http://gmlp-glovo-metaflow-l7e5-metadata-svc.gmlp-glovo-metaflow.svc.cluster.local:8080/metaflow-metadata` |
-| Talabat Dedicated | `http://gmlp-talabat-metaflow-wtcg-metadata-svc.gmlp-talabat-metaflow.svc.cluster.local:8080/metaflow-metadata` |
+| QC Dedicated Staging | `http://gmlp-qc-metaflow-nuts-metadata-svc.gmlp-qc-metaflow.svc.cluster.local:8080/metaflow-metadata` |
+| Consumer Dedicated Staging | `http://gmlp-consumer-metaflow-8h80-metadata-svc.gmlp-consumer-metaflow.svc.cluster.local:8080/metaflow-metadata` |
+| FinTech Dedicated Staging | `http://gmlp-fintech-metaflow-v58i-metadata-svc.gmlp-fintech-metaflow.svc.cluster.local:8080/metaflow-metadata` |
+| Logistics Dedicated Staging | `http://gmlp-logistics-metaflow-35t3-metadata-svc.gmlp-logistics-metaflow.svc.cluster.local:8080/metaflow-metadata` |
+| Glovo Dedicated Staging | `http://gmlp-glovo-metaflow-l7e5-metadata-svc.gmlp-glovo-metaflow.svc.cluster.local:8080/metaflow-metadata` |
+| Talabat Dedicated Staging | `http://gmlp-talabat-metaflow-wtcg-metadata-svc.gmlp-talabat-metaflow.svc.cluster.local:8080/metaflow-metadata` |
 
 URL pattern: `http://gmlp-{vertical}-metaflow-{stamp}-metadata-svc.gmlp-{vertical}-metaflow.svc.cluster.local:8080/metaflow-metadata`
+
+For production dedicated clusters, replace the staging stamp with the production stamp from the Environment Stamps table in `clusters-and-namespaces.md`. For staging-to-production migration details, see the "Staging to Production Migration" section in `clusters-and-namespaces.md`.
 
 Run on Kubernetes:
 ```bash

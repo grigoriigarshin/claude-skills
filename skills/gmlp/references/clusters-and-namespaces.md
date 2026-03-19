@@ -26,6 +26,55 @@ Command pattern: `gcloud container clusters get-credentials {cluster_name} --reg
 
 Verify: `kubectl get pods -n <namespace>` (VPN required)
 
+### Discovering Production Cluster Details
+
+Production cluster names are not listed above. Use these commands to discover them:
+
+```bash
+# Find the cluster name for a production GCP project
+gcloud container clusters list --project {gcp_project} --format="value(name)"
+
+# Find service accounts in a namespace
+kubectl get sa -n {namespace} --no-headers -o custom-columns=NAME:.metadata.name
+```
+
+Production GCP projects follow the pattern `gmlp-{vertical}-prod-{id}`. Known production projects are listed in the "GCP Service Accounts — Dedicated Clusters — Production" section below.
+
+---
+
+## Staging to Production Migration
+
+When switching a `.metaflowconfig.env` from staging to production, apply these changes:
+
+### 1. Determine the production stamp
+
+Look up the production stamp for the vertical in the Environment Stamps table below. The stamp is the short identifier embedded in resource names (e.g., `nuts` → `r3c2` for QC).
+
+### 2. Values that change
+
+| Variable | Change |
+|---|---|
+| `METAFLOW_SERVICE_URL` | Replace staging stamp with production stamp; external URLs also drop `-stg` (see Service URLs below) |
+| `METAFLOW_DATASTORE_SYSROOT_GS` | Replace staging stamp with production stamp in bucket name |
+| `METAFLOW_KUBERNETES_SERVICE_ACCOUNT` | Replace staging stamp with production stamp |
+| `METAFLOW_SERVICE_INTERNAL_URL` | Replace staging stamp with production stamp (see Internal URL pattern in `metaflow-config.md`) |
+| `METAFLOW_ARGO_EVENTS_SERVICE_ACCOUNT` | Same as `METAFLOW_KUBERNETES_SERVICE_ACCOUNT` |
+| `METAFLOW_ARGO_WORKFLOWS_UI_URL` | Use production URL from Service URLs section below |
+| `METAFLOW_KUBERNETES_SECRETS` | Replace staging stamp with production stamp |
+
+### 3. Values that stay the same
+
+`METAFLOW_KUBERNETES_NAMESPACE`, `METAFLOW_KUBERNETES_CONTAINER_REGISTRY`, `METAFLOW_ARGO_EVENTS_WEBHOOK_URL`, `METAFLOW_ARGO_EVENTS_EVENT_BUS`, `METAFLOW_ARGO_EVENTS_EVENT_SOURCE`, `METAFLOW_ARGO_EVENTS_EVENT`, `METAFLOW_ARTIFACT_LOCALROOT`, `METAFLOW_DEFAULT_PACKAGE_SUFFIXES`, `METAFLOW_KUBERNETES_LABELS` (except update slack channel to prod if desired).
+
+### 4. Connect to the production cluster
+
+```bash
+# Discover the production cluster name
+gcloud container clusters list --project {prod_gcp_project} --format="value(name)"
+# Connect
+gcloud container clusters get-credentials {cluster_name} --region us-east1 --project {prod_gcp_project}
+```
+
 ---
 
 ## Namespaces & K8s Service Accounts
