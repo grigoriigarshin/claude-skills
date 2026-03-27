@@ -26,6 +26,29 @@ gmlp_serving = { source = "gmlp-pypi", version = "0.2.1" }
 
 Note: For Poetry < 2.0, run `poetry self add keyrings.google-artifactregistry-auth` instead of using `[tool.poetry.requires-plugins]`.
 
+### uv (pyproject.toml)
+```toml
+[[tool.uv.index]]
+name = "gmlp-pypi"
+url = "https://oauth2accesstoken@europe-python.pkg.dev/dp-common-infra-5780/developer-platform-python/simple/"
+explicit = true
+
+[tool.uv]
+keyring-provider = "subprocess"
+
+[project]
+dependencies = [
+    "gmlp_cli[all]==<version>",
+]
+
+[tool.uv.sources]
+gmlp_cli = { index = "gmlp-pypi" }
+```
+
+Then: `gcloud auth application-default login && uv lock && uv sync`
+
+No separate auth plugin needed — uv calls `gcloud` automatically via keyring subprocess.
+
 ### Pip
 ```bash
 pip install keyrings-google-artifactregistry-auth
@@ -186,6 +209,45 @@ To force-enable in staging DroneCI: set `GMLP_METAFLOW_SCHEDULE_ENABLED: true` i
 
 ---
 
+## @slack Decorator
+
+From `gmlp_metaflow_ext` package. Injects Slack alert metadata into Argo Workflows for targeted failure notifications.
+
+Parameters:
+- **`description`** — Human-readable name for the flow (appears in Slack notification)
+- **`mentions`** — List of Slack user IDs to tag (e.g., `["U09QFF10XUH"]`)
+- **`channel`** — Slack channel name for alerts (without `#`)
+
+```python
+from metaflow import FlowSpec, project, step
+from gmlp_metaflow import slack
+
+@slack(
+    description="Daily ETL Pipeline",
+    mentions=["U09QFF10XUH", "U05R8LSBN6L"],
+    channel="gmlp-test-notifications"
+)
+@project(name="sandbox")
+class MyFlow(FlowSpec):
+    @step
+    def start(self):
+        print("Hello, world!")
+        self.next(self.end)
+
+    @step
+    def end(self):
+        pass
+
+if __name__ == '__main__':
+    MyFlow()
+```
+
+Finding Slack User IDs: Open user profile in Slack → three-dot menu → **Copy member ID** (format: `U09QFF10XUH`).
+
+Known limitation: Metaflow version constraint — `gmlp_metaflow` pins Metaflow below 2.19.14 due to a flow mutators issue.
+
+---
+
 ## GMLP Info Card
 
 Custom Metaflow card with links to Grafana dashboards and Argo UI:
@@ -256,3 +318,47 @@ def get_results():
 ```
 
 Metrics exported to Prometheus/Grafana. Periods in metric names converted to underscores.
+
+---
+
+## Publishing Packages to Artifact Registry
+
+### uv (via Drone CI with gmlp-uv-auth)
+
+```yaml
+kind: pipeline
+type: docker
+name: publish-package
+
+volumes:
+  - name: uv-auth
+    temp: {}
+
+steps:
+  - name: generate-uv-auth
+    image: harbor.deliveryhero.net/container/deliveryhero/gmlp-uv-auth:0.4.0
+    environment:
+      UV_REPO_NAME: gmlp-pypi
+    volumes:
+      - name: uv-auth
+        path: /auth
+
+  - name: publish
+    image: python:3.11-slim
+    commands:
+      - . /auth/gmlp-uv-auth.env
+      - pip install uv
+      - uv build
+      - uv publish --publish-url https://europe-python.pkg.dev/dp-common-infra-5780/developer-platform-python/ --username oauth2accesstoken --password "$UV_INDEX_GMLP_PYPI_PASSWORD"
+    volumes:
+      - name: uv-auth
+        path: /auth
+    depends_on:
+      - generate-uv-auth
+```
+
+The `gmlp-uv-auth` plugin generates an OAuth2 access token written to `UV_INDEX_GMLP_PYPI_PASSWORD`.
+
+### Poetry (via Drone CI)
+
+See existing Poetry Drone CI publish approach with `keyrings-google-artifactregistry-auth` and `poetry publish --repository gmlp-pypi --build`.

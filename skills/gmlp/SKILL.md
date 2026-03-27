@@ -1,9 +1,9 @@
 ---
 name: gmlp
-description: Complete reference for Delivery Hero's Global Machine Learning Platform (GMLP). Use when user asks about Metaflow workflows, MLflow experiment tracking, GMLP Kubernetes clusters, deploying ML pipelines, configuring metaflowconfig.env, GMLP SDK packages, Argo Workflows, running flows on Kubernetes, GPU usage on GMLP, cross-cloud access, app onboarding to GMLP, TTM time-to-market tracking, gmlp_id, DroneCI deployment, Airflow integration, or troubleshooting GMLP errors like JSONDecodeError, GCS 403, Pod termination, or cloud notebook permission errors.
+description: Complete reference for Delivery Hero's Global Machine Learning Platform (GMLP). Use when user asks about Metaflow workflows, MLflow experiment tracking, GMLP Kubernetes clusters, deploying ML pipelines, configuring metaflowconfig.env, GMLP SDK packages, Argo Workflows, running flows on Kubernetes, GPU usage on GMLP, cross-cloud access, app onboarding to GMLP, TTM time-to-market tracking, gmlp_id, DroneCI deployment, Airflow integration, @slack decorator, Slack alerts, uv package manager with GAR, k6 load testing inference, cloud notebook K8s Argo NBRunner, or troubleshooting GMLP errors like JSONDecodeError, GCS 403, Pod termination, or cloud notebook permission errors.
 metadata:
-  author: Delivery Hero GMLP Team
-  version: 2.0.0
+  author: Mundher
+  version: 2.1.0
 ---
 
 # GMLP - Global Machine Learning Platform
@@ -16,11 +16,11 @@ Read the matching reference file BEFORE answering. Multiple files may be needed.
 
 | Topic keywords | Reference file |
 |---|---|
-| cluster, namespace, service account, stamp, service URL, backend app, GCP service account, `get-credentials`, `kubectl`, vertical, staging to production, production cluster, switch environment, migrate to prod | `references/clusters-and-namespaces.md` |
+| cluster, namespace, service account, stamp, service URL, backend app, GCP service account, `get-credentials`, `kubectl`, vertical, staging to production, production cluster, switch environment, migrate to prod, cloud notebook service URL, `--internal-ip` | `references/clusters-and-namespaces.md` |
 | `.metaflowconfig.env`, environment variable, local run, K8s run config, cost label, secret, `METAFLOW_` | `references/metaflow-config.md` |
 | MLflow, tracking URI, experiment, model registry, nested run, model promotion, `mlflow.` | `references/mlflow-guide.md` |
-| SDK, CLI, `gmlp_cli`, `@kubernetes_optional`, `@schedule_optional`, serving, OTel, GMLP Info card, `gmlp_metaflow`, install package, Artifact Registry, Argo deploy, Argo trigger | `references/sdk-reference.md` |
-| GPU, node selection, compute class, cross-cloud, AWS, performance, Drone CI, Dockerfile, debugging, `kubectl describe`, retry, fault tolerance, spot, on-demand | `references/advanced-topics.md` |
+| SDK, CLI, `gmlp_cli`, `@kubernetes_optional`, `@schedule_optional`, `@slack`, Slack alerts, slack decorator, serving, OTel, GMLP Info card, `gmlp_metaflow`, install package, Artifact Registry, uv, `uv sync`, `gmlp-uv-auth`, Argo deploy, Argo trigger, publish package | `references/sdk-reference.md` |
+| GPU, node selection, compute class, cross-cloud, AWS, performance, Drone CI, Dockerfile, debugging, `kubectl describe`, retry, fault tolerance, spot, on-demand, k6, load testing, inference load test, NBRunner, cloud notebook K8s, cloud notebook Argo | `references/advanced-topics.md` |
 | onboarding, Developer Portal, `app.yaml`, escapehatch, externalgrant, namespace creation, CI/CD setup, new app | `references/app-onboarding.md` |
 | TTM, time-to-market, `gmlp_id`, lifecycle stage, dashboard, tagging runs | `references/ttm-tracking.md` |
 | error, troubleshooting, VPN, permission, 403, JSONDecodeError, container image, cloud notebook | `references/troubleshooting.md` |

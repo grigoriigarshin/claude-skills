@@ -298,7 +298,7 @@ ENV METAFLOW_SERVICE_INTERNAL_URL="http://gmlp-metaflow-8hs7-metadata-svc.gmlp-m
 
 ### Tools
 - **Metaflow UI**: Flow search, logs, DAGs, running times
-- **Grafana**: Resource utilization, K8s logs — https://deliveryhero.grafana.net/d/9e34fa3d-0148-4343-b7aa-414f7fe6ab1c/gmlp-metaflow-tasks
+- **Grafana**: Resource utilization, K8s logs — https://deliveryhero.grafana.net/d/9e34fa3d-0148-4343-b7aa-414f7fe6ab1c1/gmlp-metaflow-flow-pods-logs?orgId=1&from=now-1h&to=now
 - **Argo Workflows UI**: For Argo-managed flows
 - **kubectl**: Direct pod inspection
 
@@ -313,4 +313,110 @@ kubectl describe pod $(kubectl get pods -n $METAFLOW_KUBERNETES_NAMESPACE \
 kubectl delete job $(kubectl get jobs -n $METAFLOW_KUBERNETES_NAMESPACE \
   -o=jsonpath='{.items[?(@.metadata.annotations.metaflow/task_id=="{TASK_ID}")].metadata.name}') \
   -n $METAFLOW_KUBERNETES_NAMESPACE
+```
+
+---
+
+## Load Testing with k6
+
+For load testing GMLP inference serving apps.
+
+### GDP Load Testing Platform (managed service)
+
+Works for: public endpoints (any cloud) and internal services on **AWS EKS only**. GCP clusters NOT supported for internal service testing.
+
+Steps:
+1. Register service in DevHub catalog as kind `service`
+2. In DevPortal → Feature Flags → enable `loadtest-enabled`
+3. Load Test tab → create config pointing to k6 script in GitHub
+4. For internal services: request K6 operator install via `#gdp-support` (allow 2-3 days)
+5. Click Play, monitor via Grafana dashboards
+
+### Local k6 Testing
+
+Install: `brew install k6` (macOS)
+
+Key script pattern for inference endpoints:
+```javascript
+import { check } from "k6";
+import http from "k6/http";
+
+const BASE_URL = __ENV.BASE_URL || "http://localhost:8080/infer";
+
+export let options = {
+  scenarios: {
+    inference_load: {
+      executor: "ramping-arrival-rate",
+      timeUnit: "1s",
+      startRate: 0,
+      preAllocatedVUs: 20,
+      maxVUs: 200,
+      stages: [
+        { duration: "1m", target: 10 },   // Ramp to 600 RPM
+        { duration: "1m", target: 30 },   // Ramp to 1,800 RPM
+        { duration: "5m", target: 30 },   // Sustain
+        { duration: "1m", target: 0 },    // Ramp down
+      ],
+    },
+  },
+  thresholds: {
+    http_req_duration: ["p(95)<500"],
+    http_req_failed: ["rate<0.01"],
+  },
+};
+
+export default function () {
+  const payload = { feature_1: 1.5, feature_2: 2.3 };
+  const response = http.post(BASE_URL, JSON.stringify(payload), {
+    headers: { "Content-Type": "application/json" },
+  });
+  check(response, { "status is 200": (r) => r.status === 200 });
+}
+```
+
+Run: `BASE_URL=http://localhost:8080/infer k6 run load_test.js`
+
+Key metrics to watch:
+- **`http_req_duration`** — p90/p95/p99 latency
+- **`http_reqs`** — sustained RPS
+- **`http_req_failed`** — error rate (target < 1%)
+- **`vus`** — if reaching `maxVUs`, increase headroom
+
+---
+
+## Cloud Notebooks: Running Flows on K8s and Argo
+
+Cloud Notebooks support running Metaflow flows directly on Kubernetes and deploying with Argo Workflows.
+
+### Prerequisites
+1. Authenticate: `gcloud auth login && gcloud auth application-default login`
+2. Connect to cluster with `--internal-ip` flag (required for notebooks) — see `clusters-and-namespaces.md` for commands and notebook-specific service URLs
+3. Export `USERNAME` env var
+4. Install packages: `pip install mlflow metaflow google-cloud-storage` (or uv/poetry/micromamba)
+5. Environment variables are auto-set via `flow.env` if using a container image
+
+### Running from Notebooks
+
+```bash
+# Run on Kubernetes
+python flows/branch.py run --with kubernetes
+
+# Deploy with Argo Workflows
+python flows/branch.py argo-workflows create
+python flows/branch.py argo-workflows trigger
+```
+
+For notebook console (NBRunner):
+```python
+from metaflow import FlowSpec, step, NBRunner
+
+class MyFlow(FlowSpec):
+    @step
+    def start(self):
+        self.next(self.end)
+    @step
+    def end(self):
+        pass
+
+run = NBRunner(MyFlow).nbrun()
 ```

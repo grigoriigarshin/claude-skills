@@ -26,6 +26,17 @@ Command pattern: `gcloud container clusters get-credentials {cluster_name} --reg
 
 Verify: `kubectl get pods -n <namespace>` (VPN required)
 
+### Cloud Notebook Cluster Connection
+
+From Cloud Notebooks, use the `--internal-ip` flag:
+
+```bash
+# Shared cluster
+gcloud container clusters get-credentials definite-serval --region us-east1 --project global-mlp-stg-2182 --internal-ip
+
+# Dedicated clusters — same commands as above but add --internal-ip
+```
+
 ### Discovering Production Cluster Details
 
 Production cluster names are not listed above. Use these commands to discover them:
@@ -154,6 +165,36 @@ Stamps are short identifiers embedded in resource names (GCS buckets, service ac
 URL pattern: remove `-stg` from the staging URL. Examples:
 - QC Metaflow Production: `https://gmlp-qc-metaflow.deliveryhero.io/`
 - Consumer Argo Production: `https://gmlp-consumer-argo-workflows.deliveryhero.io/`
+
+### Cloud Notebook Service URLs
+
+Cloud Notebooks use different gateway URLs than VPN external URLs. These are auto-configured in `flow.env` when using a container image.
+
+**Shared Cluster:**
+
+| Service | URI |
+|---|---|
+| Metaflow | `https://gmlp-metaflow-mdai-metadata-svc-gw.us-east1.int-1734708406dncs.gcp.dhplatform.cloud/metaflow-metadata` |
+| MLflow | `https://gmlp-mlflow-mdai-mlflow-svc-gw.us-east1.int-1734708406dncs.gcp.dhplatform.cloud/` |
+
+**Dedicated Clusters — Metaflow:**
+
+| Vertical | Metaflow Service URL |
+|---|---|
+| QCommerce | `https://gmlp-qc-metaflow-nuts-metadata-svc-gw.us-east1.int-1754490571iioz.gcp.dhplatform.cloud/metaflow-metadata` |
+| Consumer | `https://gmlp-consumer-metaflow-8h80-metadata-svc-gw.us-east1.int-1753174129alcq.gcp.dhplatform.cloud/metaflow-metadata` |
+| FinTech | `https://gmlp-fintech-metaflow-v58i-metadata-svc-gw.us-east1.int-1751294745lxsz.gcp.dhplatform.cloud/metaflow-metadata` |
+| Logistics | `https://gmlp-logistics-metaflow-35t3-metadata-svc-gw.us-east1.int-1752655937tgph.gcp.dhplatform.cloud/metaflow-metadata` |
+| Glovo | `https://gmlp-glovo-metaflow-l7e5-metadata-svc-gw.us-east1.int-1761149177irqc.gcp.dhplatform.cloud/metaflow-metadata` |
+
+**Dedicated Clusters — MLflow:**
+
+| Vertical | MLflow Service URI |
+|---|---|
+| QCommerce | `https://gmlp-qc-mlflow-nuts-mlflow-svc-gw.us-east1.int-1754490571iioz.gcp.dhplatform.cloud/` |
+| Consumer | `https://gmlp-consumer-mlflow-8h80-mlflow-svc-gw.us-east1.int-1753174129alcq.gcp.dhplatform.cloud/` |
+| Logistics | `https://gmlp-logistics-mlflow-35t3-mlflow-svc-gw.us-east1.int-1752655937tgph.gcp.dhplatform.cloud/` |
+| Glovo | `https://gmlp-glovo-mlflow-l7e5-mlflow-svc-gw.us-east1.int-1761149177irqc.gcp.dhplatform.cloud/` |
 
 ---
 
