@@ -1,9 +1,9 @@
 ---
 name: gmlp
-description: Complete reference for Delivery Hero's Global Machine Learning Platform (GMLP). Use when user asks about Metaflow workflows, MLflow experiment tracking, GMLP Kubernetes clusters, deploying ML pipelines, configuring metaflowconfig.env, GMLP SDK packages, Argo Workflows, running flows on Kubernetes, GPU usage on GMLP, cross-cloud access, app onboarding to GMLP, TTM time-to-market tracking, gmlp_id, DroneCI deployment, Airflow integration, @slack decorator, Slack alerts, uv package manager with GAR, k6 load testing inference, cloud notebook K8s Argo NBRunner, or troubleshooting GMLP errors like JSONDecodeError, GCS 403, Pod termination, or cloud notebook permission errors.
+description: Delivery Hero's Global Machine Learning Platform (GMLP) reference. Covers Metaflow workflows, MLflow tracking, Argo Workflows, K8s cluster config, SDK packages, GPU usage, DroneCI deployment, Airflow integration, Slack alerts, uv/GAR setup, k6 load testing, cloud notebooks, Langfuse LLM observability, backend tracking SDK, batch inference framework, project templates (gmlp project init), GMLP Claude Plugin, MCP servers, and GMLP error troubleshooting.
 metadata:
   author: Mundher
-  version: 2.1.0
+  version: 3.0.0
 ---
 
 # GMLP - Global Machine Learning Platform
@@ -23,7 +23,12 @@ Read the matching reference file BEFORE answering. Multiple files may be needed.
 | GPU, node selection, compute class, cross-cloud, AWS, performance, Drone CI, Dockerfile, debugging, `kubectl describe`, retry, fault tolerance, spot, on-demand, k6, load testing, inference load test, NBRunner, cloud notebook K8s, cloud notebook Argo | `references/advanced-topics.md` |
 | onboarding, Developer Portal, `app.yaml`, escapehatch, externalgrant, namespace creation, CI/CD setup, new app | `references/app-onboarding.md` |
 | TTM, time-to-market, `gmlp_id`, lifecycle stage, dashboard, tagging runs | `references/ttm-tracking.md` |
-| error, troubleshooting, VPN, permission, 403, JSONDecodeError, container image, cloud notebook | `references/troubleshooting.md` |
+| Langfuse, LLM observability, traces, prompts, agent tracing, `langfuse`, `pk-lf-`, `sk-lf-` | `references/langfuse-guide.md` |
+| backend tracking, inference logging, `GMLPTracker`, `GMLPBaseLog`, `gmlp_backend_tracking`, BigQuery streaming, inference data capture | `references/backend-tracking.md` |
+| batch inference, `gmlp batch-inference`, offline inference, BigQuery features, batch prediction, `BatchInferenceBase` | `references/batch-inference.md` |
+| project template, `gmlp project init`, `gmlp project update`, copier, scaffold, `--platform`, `--use-uv`, `.copier-answers.yml` | `references/project-templates.md` |
+| Claude plugin, MCP server, `gmlp mcp`, `/gmlp-onboard`, `/flowspec-validate`, `/debug-flow`, `/connect-cluster`, plugin marketplace | `references/claude-plugin.md` |
+| error, troubleshooting, VPN, permission, 403, JSONDecodeError, container image, cloud notebook, MCP server error, Langfuse 302, `docker not found` | `references/troubleshooting.md` |
 
 ## Platform Components
 
@@ -33,6 +38,11 @@ Read the matching reference file BEFORE answering. Multiple files may be needed.
 - **Kubernetes (GKE)**: Remote execution clusters (shared + dedicated per vertical)
 - **GCS**: Artifact storage buckets
 - **Cloud Notebooks**: Vertex AI interactive development
+- **Langfuse**: LLM observability — traces, prompts, agent debugging, cost tracking
+- **Backend Tracking**: Non-blocking inference data capture to BigQuery (`gmlp-backend-tracking` SDK)
+- **Batch Inference**: Low-code framework for large-scale offline inference on BigQuery features
+- **Project Templates**: Copier-based project scaffolding (`gmlp project init`)
+- **Claude Plugin**: Claude Code plugins with MCP servers for GMLP workflows
 
 ## Vertical Resolution Logic
 
@@ -82,6 +92,27 @@ gmlp argo deploy --root-flow-path ./mlops/flows --pr-branch feature/new-model --
 ```
 Read `references/sdk-reference.md` for full CLI reference.
 
+### Setting up Langfuse
+1. Ensure `gmlp-proxy` is running locally (Langfuse is behind Cloudflare)
+2. Open your vertical's instance URL → read `references/langfuse-guide.md`
+3. Sign in with Okta → create a Project in your org
+4. Generate API keys: Settings → API Keys → `pk-lf-...` + `sk-lf-...`
+
+### Scaffolding a new project
+```bash
+gmlp project init --template-name training-template --output-dir my-project --platform consumer
+```
+Read `references/project-templates.md` for templates, platforms, and config reference.
+
+### Running batch inference
+```bash
+# Local
+poetry run gmlp batch-inference run --config config.yaml
+# On Kubernetes
+poetry run gmlp batch-inference run --config config.yaml --kubernetes
+```
+Read `references/batch-inference.md` for config YAML reference and storage buckets.
+
 ## Code Templates
 
 ### Hello World Flow
@@ -102,28 +133,6 @@ class HelloWorld(FlowSpec):
 
 if __name__ == "__main__":
     HelloWorld()
-```
-
-### @kubernetes_optional (from gmlp_metaflow_ext package)
-```python
-from metaflow import FlowSpec, step
-from gmlp_metaflow import kubernetes_optional
-
-class MyFlow(FlowSpec):
-    @kubernetes_optional(
-        cpu=1, memory=4000,
-        node_selector="cloud.google.com/compute-class=gmlp-performance"
-    )
-    @step
-    def start(self):
-        self.next(self.end)
-
-    @step
-    def end(self):
-        pass
-
-if __name__ == '__main__':
-    MyFlow()
 ```
 
 ### Docker Image Configuration
@@ -148,5 +157,8 @@ WARNING: Do NOT use `--with kubernetes:image=...` if any steps use `@kubernetes(
 | Service Account Not Found | `METAFLOW_KUBERNETES_SERVICE_ACCOUNT` mismatch | Check `kubectl get sa -n {namespace}` |
 | `Incorrect version for metaflow service` | Network issue (not version) | Connect to VPN |
 | `AssumeRoleWithWebIdentity` AccessDenied | Hardcoded `AWS_ROLE_ARN` | Remove manual `AWS_ROLE_ARN` exports |
+| Langfuse SDK `302`/`401` redirects | Not using gmlp-proxy | Start `gmlp-proxy` locally |
+| `docker not found on PATH` | MCP server needs Docker | Install Docker Desktop or Colima |
+| `DRONE_TOKEN is invalid or expired` | Stale token or VPN issue | Connect VPN, copy fresh token from Drone account |
 
 For full troubleshooting details, read `references/troubleshooting.md`.

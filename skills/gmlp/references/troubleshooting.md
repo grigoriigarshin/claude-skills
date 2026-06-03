@@ -99,6 +99,44 @@ Errors grouped by category. Match the error message pattern to find the fix.
 
 ---
 
+## Langfuse
+
+### `302` or `401` redirects from Langfuse SDK
+- **Pattern**: SDK silently fails, logs show `302` or `401` responses
+- **Cause**: Langfuse sits behind Cloudflare. Local SDKs cannot authenticate via Okta web screen without proxy.
+- **Fix**: Start `gmlp-proxy` locally before making SDK calls. Verify proxy is running.
+
+---
+
+## MCP Servers
+
+### `gmlp-docs requires GITHUB_PERSONAL_ACCESS_TOKEN`
+- **Fix (Claude Code)**: Auto-inserted if unset. Otherwise: `export GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token)`
+- `gmlp mcp list` also flags values that are literal `${VAR:-}` placeholders or unexecuted `$(...)`.
+
+### `docker not found on PATH` / `docker daemon not reachable`
+- **Cause**: `gmlp-docs` server runs in Docker container.
+- **Fix**: Install Docker Desktop or Colima. Start with `colima start`. Verify: `docker info`.
+
+### `GITHUB_PERSONAL_ACCESS_TOKEN is invalid or expired`
+- **Fix**: `export GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token)` or generate new PAT at github.com/settings/tokens.
+
+### `uvx not found on PATH`
+- **Cause**: `drone` MCP server requires `uvx`.
+- **Fix**: `curl -LsSf https://astral.sh/uv/install.sh | sh` — verify: `uvx --version`.
+
+### `UV_INDEX not reachable`
+- **Cause**: VPN disconnected or stale gcloud token.
+- **Fix**: Connect VPN + `gcloud auth print-access-token`. Set: `export UV_INDEX="https://oauth2accesstoken:$(gcloud auth print-access-token)@europe-python.pkg.dev/dp-common-infra-5780/developer-platform-python/simple/"`
+
+### `DRONE_TOKEN is invalid or expired` / `drone server not reachable`
+- **Fix**: VPN issue or stale token. Connect VPN. Copy fresh token from `drone-ci.deliveryhero.net/account`.
+
+### Server starts but assistant says it has no tools
+- **Fix**: Run `gmlp mcp start <server>` directly in terminal. If it exits with error, fix the underlying cause before retrying from MCP client.
+
+---
+
 ## Harbor Images
 
 ### Debugging container images

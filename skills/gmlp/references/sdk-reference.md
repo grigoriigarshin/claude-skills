@@ -61,12 +61,13 @@ pip install --extra-index-url https://europe-python.pkg.dev/dp-common-infra-5780
 
 | Package | Description |
 |---|---|
-| `gmlp_cli` | CLI for CI/CD, notebooks, project templates, batch inference. Modules: `argo`, `batch-inference`, `cluster`, `notebook`, `project` |
+| `gmlp_cli` | CLI for CI/CD, notebooks, project templates, batch inference, MCP servers. Modules: `argo`, `batch-inference`, `cluster`, `notebook`, `project`, `mcp` |
 | `gmlp_metaflow_ext` | Custom decorators (`@kubernetes_optional`, `@schedule_optional`) and GMLP Info card |
 | `gmlp_data_handler` | Utilities for loading data from GCS, S3, BigQuery |
 | `gmlp_otel` | OpenTelemetry helper for exporting metrics/traces to Grafana |
 | `gmlp_serving` | Standardized model serving via `MLInferenceInterface` |
 | `gmlp_smi` | FlowSpec templates for standardized Metaflow workflows |
+| `gmlp_backend_tracking` | Non-blocking inference data capture to BigQuery. See `backend-tracking.md` |
 
 ---
 
@@ -114,6 +115,14 @@ gmlp argo deploy-watch \
     --timeout-seconds 600 \
     --poll-interval-seconds 10
 ```
+
+### Batch Inference
+
+See `batch-inference.md` for CLI commands, config YAML reference, and storage bucket URLs.
+
+### MCP Servers
+
+See `claude-plugin.md` for CLI commands, server setup, and env vars.
 
 ### Logging Config
 ```bash

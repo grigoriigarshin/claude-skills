@@ -21,6 +21,7 @@ gcloud container clusters get-credentials definite-serval --region us-east1 --pr
 | Logistics | `decent-chipmunk` | `gmlp-logistics-stg-8782` |
 | Glovo | `climbing-duckling` | `gmlp-glovo-stg-0601` |
 | Talabat | `grand-louse` | `gmlp-talabat-stg-3460` |
+| Vendor | `busy-puma` | `gmlp-vendor-stg-8346` |
 
 Command pattern: `gcloud container clusters get-credentials {cluster_name} --region us-east1 --project {project}`
 
@@ -51,6 +52,17 @@ kubectl get sa -n {namespace} --no-headers -o custom-columns=NAME:.metadata.name
 
 Production GCP projects follow the pattern `gmlp-{vertical}-prod-{id}`. Known production projects are listed in the "GCP Service Accounts — Dedicated Clusters — Production" section below.
 
+### Known Production Cluster Names
+
+| Vertical | Cluster Name | GCP Project |
+|---|---|---|
+| Shared | `moved-fish` | `global-mlp-prod-3715` |
+| QCommerce | `holy-herring` | `gmlp-qc-prod-9277` |
+| Consumer | `liberal-sturgeon` | `gmlp-consumer-prod-7194` |
+| Logistics | `crisp-chicken` | `gmlp-logistics-prod-6592` |
+| Glovo | `trusting-trout` | `gmlp-glovo-prod-7237` |
+| Talabat | `glad-urchin` | `gmlp-talabat-prod-0928` |
+
 ---
 
 ## Staging to Production Migration
@@ -75,7 +87,16 @@ Look up the production stamp for the vertical in the Environment Stamps table be
 
 ### 3. Values that stay the same
 
-`METAFLOW_KUBERNETES_NAMESPACE`, `METAFLOW_KUBERNETES_CONTAINER_REGISTRY`, `METAFLOW_ARGO_EVENTS_WEBHOOK_URL`, `METAFLOW_ARGO_EVENTS_EVENT_BUS`, `METAFLOW_ARGO_EVENTS_EVENT_SOURCE`, `METAFLOW_ARGO_EVENTS_EVENT`, `METAFLOW_ARTIFACT_LOCALROOT`, `METAFLOW_DEFAULT_PACKAGE_SUFFIXES`, `METAFLOW_KUBERNETES_LABELS` (except update slack channel to prod if desired).
+The following variables stay the same (except for updating the slack channel to prod if desired):
+- `METAFLOW_KUBERNETES_NAMESPACE`
+- `METAFLOW_KUBERNETES_CONTAINER_REGISTRY`
+- `METAFLOW_ARGO_EVENTS_WEBHOOK_URL`
+- `METAFLOW_ARGO_EVENTS_EVENT_BUS`
+- `METAFLOW_ARGO_EVENTS_EVENT_SOURCE`
+- `METAFLOW_ARGO_EVENTS_EVENT`
+- `METAFLOW_ARTIFACT_LOCALROOT`
+- `METAFLOW_DEFAULT_PACKAGE_SUFFIXES`
+- `METAFLOW_KUBERNETES_LABELS`
 
 ### 4. Connect to the production cluster
 
@@ -101,8 +122,9 @@ gcloud container clusters get-credentials {cluster_name} --region us-east1 --pro
 | Talabat | `gmlp-user-talabat` | `gmlp-user-talabat-mdai-http-svc` |
 | GIS | `gmlp-user-gis` | `gmlp-user-gis-mdai-http-svc` |
 | Vendor | `gmlp-user-vendor` | `gmlp-user-vendor-mdai-http-svc` |
-| Fintech | `gmlp-user-fintech` | `gmlp-user-fintech-mdai-http-svc` |
+| FinTech | `gmlp-user-fintech` | `gmlp-user-fintech-mdai-http-svc` |
 | eFood | `gmlp-user-efood` | `gmlp-user-efood-mdai-http-svc` |
+| PeYa | `gmlp-user-peya` | `gmlp-user-peya-mdai-http-svc` |
 
 ### Dedicated Clusters
 
@@ -114,6 +136,7 @@ gcloud container clusters get-credentials {cluster_name} --region us-east1 --pro
 | Logistics | `gmlp-logistics-user` | `gmlp-logistics-user-35t3-http-svc` |
 | Glovo | `gmlp-glovo-user` | `gmlp-glovo-user-l7e5-http-svc` |
 | Talabat | `gmlp-talabat-user` | `gmlp-talabat-user-wtcg-http-svc` |
+| Vendor | `gmlp-vendor-user` | `gmlp-vendor-user-0580-http-svc` |
 
 ---
 
@@ -136,6 +159,7 @@ Stamps are short identifiers embedded in resource names (GCS buckets, service ac
 | Glovo Dedicated Production | `h44r` |
 | Talabat Dedicated Staging | `wtcg` |
 | Talabat Dedicated Production | `ct27` |
+| Vendor Dedicated Staging | `0580` |
 
 ---
 
@@ -159,12 +183,21 @@ Stamps are short identifiers embedded in resource names (GCS buckets, service ac
 | Glovo | `https://gmlp-glovo-metaflow-stg.deliveryhero.io/` | `https://gmlp-glovo-argo-workflows-stg.deliveryhero.io/` | `https://gmlp-glovo-mlflow-stg.deliveryhero.io/` |
 | FinTech | `https://gmlp-fintech-metaflow-stg.deliveryhero.io/` | `https://gmlp-fintech-argo-workflows-stg.deliveryhero.io/` | `https://gmlp-fintech-mlflow-stg.deliveryhero.io/` |
 | Talabat | `https://gmlp-talabat-metaflow-stg.deliveryhero.io/` | `https://gmlp-talabat-argo-workflows-stg.deliveryhero.io/` | `https://gmlp-talabat-mlflow-stg.deliveryhero.io/` |
+| Vendor | `https://gmlp-vendor-metaflow-stg.deliveryhero.io/` | `https://gmlp-vendor-argo-workflows-stg.deliveryhero.io/` | `https://gmlp-vendor-mlflow-stg.deliveryhero.io/` |
 
 ### Dedicated Clusters — Production
 
 URL pattern: remove `-stg` from the staging URL. Examples:
 - QC Metaflow Production: `https://gmlp-qc-metaflow.deliveryhero.io/`
 - Consumer Argo Production: `https://gmlp-consumer-argo-workflows.deliveryhero.io/`
+
+### Langfuse Instance URLs (Staging)
+
+| Vertical | URL |
+|---|---|
+| Logistics | `https://gmlp-logistics-langfuse-stg.deliveryhero.io` |
+| QCommerce | `https://gmlp-qc-langfuse-stg.deliveryhero.io` |
+| Vendor | `https://gmlp-vendor-langfuse-stg.deliveryhero.io` |
 
 ### Cloud Notebook Service URLs
 

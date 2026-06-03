@@ -95,6 +95,8 @@ Disable retry for a specific step: `@retry(times=0)`
 
 ```python
 # Checkpoint-based training pattern
+from metaflow import FlowSpec, step, retry, kubernetes
+
 @kubernetes
 @retry(times=3, minutes_between_retries=2)
 @step
