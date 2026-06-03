@@ -1,6 +1,6 @@
 ---
 name: gmlp
-description: Delivery Hero's Global Machine Learning Platform (GMLP) reference. Covers Metaflow workflows, MLflow tracking, Argo Workflows, K8s cluster config, SDK packages, GPU usage, DroneCI deployment, Airflow integration, Slack alerts, uv/GAR setup, k6 load testing, cloud notebooks, Langfuse LLM observability, backend tracking SDK, batch inference framework, project templates (gmlp project init), GMLP Claude Plugin, MCP servers, and GMLP error troubleshooting.
+description: Delivery Hero's Global Machine Learning Platform (GMLP) reference. Use when the user wants to run or debug Metaflow flows, track experiments with MLflow, deploy workflows with Argo or DroneCI, connect to GMLP K8s clusters, configure .metaflowconfig.env, set up GPU nodes, onboard a new app, scaffold a project (gmlp project init), run batch inference, integrate Langfuse LLM observability, capture inference data with backend tracking SDK, load test with k6, use cloud notebooks, install GMLP SDK packages via uv/Poetry/GAR, set up Slack alerts, configure MCP servers or Claude plugins, or troubleshoot GMLP errors (VPN, 403, JSONDecodeError, container image issues).
 metadata:
   author: Mundher
   version: 3.0.0
