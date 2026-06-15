@@ -19,7 +19,7 @@ Creates slide decks in the Service XP dark design language through a three-phase
 ## Install
 
 ```bash
-bash <(gh api repos/deliveryhero/claude-skills/contents/install.sh -H "Accept: application/vnd.github.raw") presentations
+bash <(gh api repos/grigoriigarshin/claude-skills/contents/install.sh -H "Accept: application/vnd.github.raw") presentations
 ```
 
 Requires `npm` — installs Puppeteer (~150 MB Chromium) on first install.

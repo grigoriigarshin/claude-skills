@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SKILL="${1:-}"
-REPO="deliveryhero/claude-skills"
+REPO="grigoriigarshin/claude-skills"
 SKILLS_DIR="$HOME/.claude/skills"
 
 if [ -z "$SKILL" ]; then

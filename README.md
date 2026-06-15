@@ -5,7 +5,7 @@ Shared Claude Code skills for Delivery Hero colleagues.
 ## Install a skill
 
 ```bash
-bash <(gh api repos/deliveryhero/claude-skills/contents/install.sh -H "Accept: application/vnd.github.raw") presentations
+bash <(gh api repos/grigoriigarshin/claude-skills/contents/install.sh -H "Accept: application/vnd.github.raw") presentations
 ```
 
 Replace `presentations` with the name of the skill you want.
