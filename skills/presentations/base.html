@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<!--
+  PRESENTATIONS BASE TEMPLATE
+  Service XP design language — dark theme, Inter font, gradient blobs
+
+  HOW TO USE:
+  1. Copy all CSS from <style> verbatim
+  2. Copy the navigation HTML (progress, nav-arrows, counter)
+  3. Copy the JS from <script> verbatim
+  4. Replace the slides below with your presentation content
+  5. Update <span id="ct"> to the total slide count
+  6. Update slide-num in each slide to show "XX / NN"
+
+  SLIDE TYPES available (each shown as a working example below):
+  cover · catchy-title · agenda(light) · hello · section-divider
+  dot-list · cards · text-blob · text-heavy · closing
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presentation Title</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { overflow: hidden; height: 100%; }
+body { font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+
+/* ── VARIABLES ───────────────────────────────────── */
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --blue:  #2D8FCF;
+  --teal:  #8BAAAA;
+  --pink:  #C898B8;
+  --amber: #D4A850;
+  --card-bg:     #1a1a1a;
+  --card-border: #2a2a2a;
+}
+
+/* ── NAVIGATION ──────────────────────────────────── */
+.progress {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 2px; z-index: 100;
+  background: rgba(255,255,255,0.08);
+}
+.progress-fill {
+  height: 100%; background: var(--blue);
+  transition: width 0.4s ease;
+  width: 0%;
+}
+.nav-arrow {
+  position: fixed; top: 50%; transform: translateY(-50%);
+  z-index: 100; width: 44px; height: 44px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.4); color: white;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; backdrop-filter: blur(8px);
+  transition: border-color 0.2s, opacity 0.2s;
+}
+.nav-arrow:hover { border-color: rgba(255,255,255,0.5); }
+.nav-arrow.disabled { opacity: 0.15; pointer-events: none; }
+.nav-prev { left: 20px; }
+.nav-next { right: 20px; }
+.counter {
+  position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+  z-index: 100; font-size: 12px; font-weight: 600; letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.3);
+}
+
+/* ── DECK & SLIDE ────────────────────────────────── */
+.deck { position: relative; width: 100vw; height: 100vh; }
+.slide {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.5s ease;
+  overflow: hidden;
+}
+.slide.active { opacity: 1; pointer-events: auto; }
+.slide.dark  { background: var(--black); color: var(--white); }
+.slide.light { background: var(--white); color: var(--black); }
+
+/* ── HEADER (every slide) ────────────────────────── */
+.slide-header {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 40px; flex-shrink: 0;
+}
+.logo {
+  display: inline-flex; align-items: center;
+  padding: 5px 14px; border: 2px solid currentColor; border-radius: 20px;
+  font-size: 13px; font-weight: 800; letter-spacing: 0.06em;
+  text-transform: uppercase; line-height: 1.4;
+}
+.logo .dim { opacity: 0.4; }
+.header-title { font-size: 13px; font-weight: 700; font-style: italic; opacity: 0.65; }
+.header-year  { font-size: 13px; font-weight: 800; letter-spacing: 0.05em; }
+
+/* ── SLIDE BODY ──────────────────────────────────── */
+.slide-body {
+  flex: 1; position: relative; z-index: 2;
+  display: flex; align-items: center;
+  padding: 0 80px 60px;
+}
+.slide-body.top { align-items: flex-start; padding-top: 16px; }
+.content       { max-width: 1300px; width: 100%; position: relative; z-index: 2; }
+.content.wide  { max-width: 100%; }
+.content.left  { max-width: 52%; }
+
+/* ── BLOBS ───────────────────────────────────────── */
+.blob-wrap {
+  position: absolute; inset: 0; overflow: hidden; z-index: 0; pointer-events: none;
+}
+.blob {
+  position: absolute; border-radius: 50%;
+  filter: blur(80px); will-change: transform;
+}
+/* grain texture overlay on blobs */
+.blob.grain::after {
+  content: '';
+  position: absolute; inset: -20%;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px; opacity: 0.12; mix-blend-mode: overlay;
+}
+
+/* ── TYPOGRAPHY ──────────────────────────────────── */
+.mega         { font-size: clamp(52px, 8vw, 118px);  font-weight: 900; line-height: 0.92; letter-spacing: -0.03em; }
+.big-title    { font-size: clamp(36px, 5.5vw, 78px); font-weight: 900; line-height: 0.97; letter-spacing: -0.025em; }
+.section-title{ font-size: clamp(26px, 3.5vw, 50px); font-weight: 900; line-height: 1.1;  letter-spacing: -0.02em; }
+.body-lg      { font-size: clamp(16px, 1.8vw, 22px); font-weight: 400; line-height: 1.6; }
+.body-md      { font-size: clamp(14px, 1.4vw, 18px); font-weight: 400; line-height: 1.6; }
+.body-sm      { font-size: 14px; font-weight: 400; line-height: 1.5; }
+.bold         { font-weight: 700; }
+.italic       { font-style: italic; }
+.dim          { opacity: 0.5; }
+
+/* ── DOT-LINE COMPONENT ──────────────────────────── */
+.dot-line { display: flex; align-items: center; margin-bottom: 10px; }
+.dot-line .dot  { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+.dot-line .line { height: 2px; width: 64px; flex-shrink: 0; }
+.dot-line.blue  .dot, .dot-line.blue  .line { background: var(--blue);  }
+.dot-line.teal  .dot, .dot-line.teal  .line { background: var(--teal);  }
+.dot-line.pink  .dot, .dot-line.pink  .line { background: var(--pink);  }
+.dot-line.amber .dot, .dot-line.amber .line { background: var(--amber); }
+
+.dot-item      { margin-bottom: 28px; }
+.dot-item h3   { font-size: clamp(18px, 2vw, 26px); font-weight: 800; margin-bottom: 6px; }
+.dot-item p    { font-size: clamp(13px, 1.2vw, 16px); line-height: 1.5; opacity: 0.65; max-width: 360px; }
+
+/* ── HORIZONTAL RULE ─────────────────────────────── */
+.h-rule       { height: 1px; background: currentColor; opacity: 0.2; margin: 14px 0; }
+.h-rule.thick { height: 2px; }
+
+/* ── CARDS ───────────────────────────────────────── */
+.card-outline {
+  border: 1.5px solid rgba(255,255,255,0.22); border-radius: 16px; padding: 26px;
+}
+.slide.light .card-outline { border-color: rgba(0,0,0,0.14); }
+.card-dark {
+  background: var(--card-bg); border: 1px solid var(--card-border);
+  border-radius: 16px; padding: 26px;
+}
+.card-title { font-size: clamp(16px, 1.8vw, 22px); font-weight: 800; margin-bottom: 10px; }
+
+/* ── GRID & LAYOUT ───────────────────────────────── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.split      { display: flex; gap: 60px; align-items: flex-start; }
+.split-half { flex: 1; }
+
+/* ── AGENDA ROWS ─────────────────────────────────── */
+.agenda-row {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: 20px 0; border-bottom: 1px solid currentColor;
+}
+.agenda-row:first-of-type { border-top: 1px solid currentColor; }
+.agenda-topic     { font-size: clamp(18px, 2.2vw, 28px); font-weight: 900; letter-spacing: -0.01em; }
+.agenda-presenter { font-size: 14px; font-style: italic; opacity: 0.55; margin-top: 4px; }
+.agenda-time      { font-size: clamp(18px, 2.2vw, 28px); font-weight: 900; flex-shrink: 0; }
+
+/* ── ICON CIRCLE ─────────────────────────────────── */
+.icon-circle {
+  width: 96px; height: 96px; border-radius: 50%;
+  background: var(--white); color: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px; font-weight: 900; flex-shrink: 0;
+}
+
+/* ── SLIDE NUMBER ────────────────────────────────── */
+.slide-num {
+  position: absolute; bottom: 20px; right: 40px;
+  font-size: 12px; font-weight: 600; z-index: 10; opacity: 0.28;
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAVIGATION CHROME ── -->
+<div class="progress"><div class="progress-fill" id="pf"></div></div>
+<button class="nav-arrow nav-prev disabled" id="np">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+</button>
+<button class="nav-arrow nav-next" id="nn">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+</button>
+<div class="counter"><span id="cc">01</span> / <span id="ct">10</span></div>
+
+<div class="deck" id="deck">
+
+<!-- ════════════════════════════════════════════════
+     SLIDE TYPE: cover
+     - Always slide 1
+     - Mega title bottom-left, date + horizontal rule, blobs, arrow circle
+     ════════════════════════════════════════════════ -->
+<div class="slide dark active">
+  <div class="blob-wrap">
+    <div class="blob grain" style="width:700px;height:700px;background:radial-gradient(circle at 40% 40%,#1a6fa8,#0a2a4a);top:-200px;left:-200px;opacity:0.8"></div>
+    <div class="blob grain" style="width:480px;height:480px;background:radial-gradient(circle,#8BAAAA,#C898B8,#D4A850);bottom:-120px;right:-80px;opacity:0.6"></div>
+  </div>
+  <div class="slide-header">
+    <span class="logo"><strong>SERV</strong><span class="dim">ICE</span></span>
+    <span class="header-title">Increasing Loyalty Through Service</span>
+    <span class="header-year">2026</span>
+  </div>
+  <div class="slide-body">
+    <div class="content">
+      <div class="mega">PRESENTATION<br>TITLE</div>
+      <div style="display:flex;align-items:center;gap:20px;margin-top:28px">
+        <span class="body-md dim">01 · 05 · 2026</span>
+        <div class="h-rule thick" style="flex:1;margin:0"></div>
+      </div>
+    </div>
+    <div class="icon-circle" style="position:absolute;bottom:60px;right:80px;font-size:32px">↗</div>
+  </div>
+  <div class="slide-num">01 / 10</div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE TYPE: catchy-title
+     - Strong declarative statement, no body text needed
+     - Huge left-aligned title, decorative dot accents at corners
+     ════════════════════════════════════════════════ -->
+<div class="slide dark">
+  <div class="blob-wrap">
+    <div class="blob grain" style="width:600px;height:600px;background:radial-gradient(circle,#1a3a6a,#0a1a3a,#2a0a3a);top:-200px;left:-80px;opacity:0.85"></div>
+  </div>
+  <div class="slide-header">
+    <span class="logo"><strong>SERV</strong><span class="dim">ICE</span></span>
+    <span class="header-title">Increasing Loyalty Through Service</span>
+    <span class="header-year">2026</span>
+  </div>
+  <div class="slide-body">
+    <div class="content">
+      <div class="big-title">Really catchy<br>title goes<br>here…</div>
+    </div>
+  </div>
+  <!-- decorative corner dot-lines -->
+  <div class="dot-line teal" style="position:absolute;top:110px;right:380px;z-index:3"><div class="dot"></div><div class="line"></div></div>
+  <div class="dot-line pink" style="position:absolute;bottom:160px;left:80px;z-index:3"><div class="dot"></div><div class="line"></div></div>
+  <div class="dot-line amber" style="position:absolute;bottom:160px;right:380px;z-index:3"><div class="dot"></div><div class="line"></div></div>
+  <div class="slide-num">02 / 10</div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE TYPE: agenda  (light background)
+     - Use for 30+ min sessions or multi-topic decks
+     - Topic rows with presenter + duration
+     ════════════════════════════════════════════════ -->
+<div class="slide light">
+  <div class="slide-header">
+    <span class="logo" style="border-color:#000"><strong>SERV</strong><span style="opacity:0.4">ICE</span></span>
+    <span class="header-title" style="color:#000">Increasing Loyalty Through Service</span>
+    <span class="header-year" style="color:#000">2026</span>
+  </div>
+  <div class="slide-body top">
+    <div class="content wide" style="padding-top:4px">
+      <div class="big-title" style="margin-bottom:12px">Agenda</div>
+      <div class="agenda-row">
+        <div>
+          <div class="agenda-topic">TOPIC NUMBER 1</div>
+          <div class="agenda-presenter">Presented by: Grigorii Garshin</div>
+        </div>
+        <div class="agenda-time">10 MIN</div>
+      </div>
+      <div class="agenda-row">
+        <div>
+          <div class="agenda-topic">TOPIC NUMBER 2</div>
+          <div class="agenda-presenter">Presented by: Grigorii Garshin</div>
+        </div>
+        <div class="agenda-time">25 MIN</div>
+      </div>
+      <div class="agenda-row">
+        <div>
+          <div class="agenda-topic">TOPIC NUMBER 3</div>
+          <div class="agenda-presenter">Presented by: Grigorii Garshin</div>
+        </div>
+        <div class="agenda-time">15 MIN</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num" style="color:#000">03 / 10</div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE TYPE: hello  (presenter intro / scene-setting)
+     - Title + 1-2 paragraphs left, large blob right
+     - Add presenter name in italic at bottom
+     ════════════════════════════════════════════════ -->
+<div class="slide dark">
+  <div class="blob-wrap">
+    <div class="blob grain" style="width:580px;height:680px;background:radial-gradient(circle at 40% 35%,#2D8FCF,#1a5080,#8BAAAA,#D4A850);right:-80px;top:-60px;opacity:0.75"></div>
+  </div>
+  <div class="slide-header">
+    <span class="logo"><strong>SERV</strong><span class="dim">ICE</span></span>
+    <span class="header-title">Increasing Loyalty Through Service</span>
+    <span class="header-year">2026</span>
+  </div>
+  <div class="slide-body">
+    <div class="content left">
+      <div class="big-title" style="margin-bottom:32px">Hello :)</div>
+      <p class="body-lg" style="margin-bottom:20px">First paragraph of context or introduction. Keep it to 2–3 sentences that orient the audience to who you are and why this matters.</p>
+      <p class="body-lg" style="margin-bottom:28px">Second paragraph if needed. Works well for scene-setting or establishing shared understanding before diving in.</p>
+      <p class="body-md italic dim">Presenter Name</p>
+    </div>
+  </div>
+  <div class="slide-num">04 / 10</div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE TYPE: section-divider
+     - Major section break, full-screen blob effect
+     - Huge title overlaid, circle icon (→ ? ! %)
+     - Blob color signals the section's mood/topic
+     ════════════════════════════════════════════════ -->
+<div class="slide dark">
+  <div class="blob-wrap">
+    <div class="blob grain" style="width:850px;height:720px;background:radial-gradient(circle at 45% 50%,#2D8FCF,#1a5080,#0a2040);left:-80px;top:-40px;opacity:0.9"></div>
+    <div class="blob" style="width:320px;height:220px;background:#050505;top:100px;left:260px;filter:blur(70px)"></div>
+  </div>
+  <div class="slide-header">
+    <span class="logo"><strong>SERV</strong><span class="dim">ICE</span></span>
+    <span class="header-title">Increasing Loyalty Through Service</span>
+    <span class="header-year">2026</span>
+  </div>
+  <div class="slide-body">
+    <div class="content">
+      <div class="mega">Section<br>Heading<br>Here</div>
+    </div>
+    <div class="icon-circle" style="position:absolute;bottom:60px;right:80px">→</div>
+  </div>
+  <div class="slide-num">05 / 10</div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE TYPE: dot-list
+     - 4-6 parallel items: pillars, root causes, principles
+     - Big title left, 2x2 or 2x3 grid of dot-items right
+     - Rotate colors: blue, teal, pink, amber, blue, teal...
+     ════════════════════════════════════════════════ -->
+<div class="slide dark">
+  <div class="blob-wrap">
+    <div class="blob grain" style="width:500px;height:500px;background:radial-gradient(circle,#1a3a5a,#2a1a4a,#3a1a2a);top:-100px;left:-100px;opacity:0.7"></div>
+  </div>
+  <div class="slide-header">
+    <span class="logo"><strong>SERV</strong><span class="dim">ICE</span></span>
+    <span class="header-title">Increasing Loyalty Through Service</span>
+    <span class="header-year">2026</span>
+  </div>
+  <div class="slide-body">
+    <div class="content wide">
+      <div class="split" style="align-items:center;gap:80px">
+        <div class="big-title" style="flex:0 0 32%">Aim of the<br>Initiative</div>
+        <div style="flex:1">
+          <div class="grid-2">
+            <div class="dot-item">
+              <div class="dot-line blue"><div class="dot"></div><div class="line"></div></div>
+              <h3>First pillar or principle</h3>
+              <p>Supporting explanation in one or two sentences that make it concrete.</p>
+            </div>
+            <div class="dot-item">
+              <div class="dot-line teal"><div class="dot"></div><div class="line"></div></div>
+              <h3>Second pillar or principle</h3>
+              <p>Supporting explanation in one or two sentences that make it concrete.</p>
+            </div>
+            <div class="dot-item">
+              <div class="dot-line pink"><div class="dot"></div><div class="line"></div></div>
+              <h3>Third pillar or principle</h3>
+              <p>Supporting explanation in one or two sentences that make it concrete.</p>
+            </div>
+            <div class="dot-item">
+              <div class="dot-line amber"><div class="dot"></div><div class="line"></div></div>
+              <h3>Fourth pillar or principle</h3>
+              <p>Supporting explanation in one or two sentences that make it concrete.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">06 / 10</div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE TYPE: cards
+     - 2-3 options or themes to compare
+     - Title + icon bottom-left, stacked outline cards right
+     ════════════════════════════════════════════════ -->
+<div class="slide dark">
+  <div class="blob-wrap">
+    <div class="blob grain" style="width:580px;height:580px;background:radial-gradient(circle,#1a4a6a,#2a1a4a,#D4A850 80%);bottom:-140px;left:-140px;opacity:0.6"></div>
+  </div>
+  <div class="slide-header">
+    <span class="logo"><strong>SERV</strong><span class="dim">ICE</span></span>
+    <span class="header-title">Increasing Loyalty Through Service</span>
+    <span class="header-year">2026</span>
+  </div>
+  <div class="slide-body">
+    <div class="content wide">
+      <div class="split" style="align-items:center;gap:60px">
+        <div style="flex:0 0 28%">
+          <div class="icon-circle" style="margin-bottom:24px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.18);color:white">↘</div>
+          <div class="big-title">Title<br>Goes<br>Here</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:14px">
+          <div class="card-outline">
+            <div class="card-title">First option or theme</div>
+            <p class="body-md">Description of this option. What it means and why it matters in 2–3 sentences.</p>
+          </div>
+          <div class="card-outline">
+            <div class="card-title">Second option or theme</div>
+            <p class="body-md">Description of this option. Keep it parallel in length and depth with the others.</p>
+          </div>
+          <div class="card-outline">
+            <div class="card-title">Third option or theme</div>
+            <p class="body-md">Description of this option. End with what the audience should take away from it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">07 / 10</div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE TYPE: text-blob
+     - Single topic with bulleted or numbered list
+     - Title + list left, large blob right
+     ════════════════════════════════════════════════ -->
+<div class="slide dark">
+  <div class="blob-wrap">
+    <div class="blob grain" style="width:540px;height:620px;background:radial-gradient(circle,#2D8FCF,#1a5080,#C898B8);right:-60px;top:-60px;opacity:0.7"></div>
+  </div>
+  <div class="slide-header">
+    <span class="logo"><strong>SERV</strong><span class="dim">ICE</span></span>
+    <span class="header-title">Increasing Loyalty Through Service</span>
+    <span class="header-year">2026</span>
+  </div>
+  <div class="slide-body">
+    <div class="content left">
+      <div class="section-title" style="margin-bottom:28px">Slide title goes here</div>
+      <p class="body-lg bold" style="margin-bottom:18px">Lead sentence or key claim. Make it the single most important thing on this slide.</p>
+      <ol style="padding-left:22px;display:flex;flex-direction:column;gap:14px" class="body-md">
+        <li>First key point — concise and specific.</li>
+        <li>Second key point — parallel structure helps readability.</li>
+        <li>Third key point — keep each to one sentence.</li>
+        <li>Fourth point if needed — total 4–6 maximum.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="slide-num">08 / 10</div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE TYPE: text-heavy
+     - Appendix, dense reference, two-column breakdown
+     - Full-width title, 2-column bullet layout
+     ════════════════════════════════════════════════ -->
+<div class="slide dark">
+  <div class="blob-wrap">
+    <div class="blob grain" style="width:720px;height:280px;background:radial-gradient(circle,#8BAAAA,#2D8FCF,#D4A850);bottom:-60px;left:-80px;opacity:0.45;border-radius:40%"></div>
+  </div>
+  <div class="slide-header">
+    <span class="logo"><strong>SERV</strong><span class="dim">ICE</span></span>
+    <span class="header-title">Increasing Loyalty Through Service</span>
+    <span class="header-year">2026</span>
+  </div>
+  <div class="slide-body top">
+    <div class="content wide">
+      <div class="section-title" style="margin-bottom:24px">This is a text-heavy slide for detailed or appendix content</div>
+      <div class="grid-2" style="gap:52px">
+        <div>
+          <p class="body-md bold" style="margin-bottom:14px">Left column lead — bold summary sentence.</p>
+          <ul style="padding-left:20px;display:flex;flex-direction:column;gap:12px" class="body-md">
+            <li>Point one with enough detail to be useful.</li>
+            <li>Point two — keep consistent depth across items.</li>
+            <li>Point three — no more than 5–6 bullets per column.</li>
+            <li>Point four.</li>
+          </ul>
+        </div>
+        <div>
+          <p class="body-md bold" style="margin-bottom:14px">Right column lead — bold summary sentence.</p>
+          <ol style="padding-left:20px;display:flex;flex-direction:column;gap:12px" class="body-md">
+            <li>First numbered item.</li>
+            <li>Second numbered item.</li>
+            <li>Third numbered item.</li>
+            <li>Fourth numbered item.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">09 / 10</div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SLIDE TYPE: closing
+     - Always last slide
+     - Can reuse cover or section-divider style
+     - Include the ask or next step clearly
+     ════════════════════════════════════════════════ -->
+<div class="slide dark">
+  <div class="blob-wrap">
+    <div class="blob grain" style="width:800px;height:800px;background:radial-gradient(circle at 50% 50%,#2D8FCF,#8BAAAA,#C898B8,#D4A850);left:-220px;top:-220px;opacity:0.55"></div>
+    <div class="blob" style="width:400px;height:400px;background:#000;right:-60px;bottom:-60px;filter:blur(60px)"></div>
+  </div>
+  <div class="slide-header">
+    <span class="logo"><strong>SERV</strong><span class="dim">ICE</span></span>
+    <span class="header-title">Increasing Loyalty Through Service</span>
+    <span class="header-year">2026</span>
+  </div>
+  <div class="slide-body">
+    <div class="content">
+      <div class="big-title" style="margin-bottom:24px">Thank you.</div>
+      <p class="body-lg" style="margin-bottom:10px">Ask or next step goes here — one clear sentence.</p>
+      <p class="body-md dim">grigorii.garshin@deliveryhero.com</p>
+    </div>
+  </div>
+  <div class="slide-num">10 / 10</div>
+</div>
+
+</div><!-- /.deck -->
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total  = slides.length;
+let cur = 0;
+
+document.getElementById('ct').textContent = String(total).padStart(2, '0');
+
+function go(n) {
+  slides[cur].classList.remove('active');
+  cur = Math.max(0, Math.min(n, total - 1));
+  slides[cur].classList.add('active');
+  document.getElementById('cc').textContent = String(cur + 1).padStart(2, '0');
+  document.getElementById('pf').style.width = ((cur + 1) / total * 100) + '%';
+  document.getElementById('np').classList.toggle('disabled', cur === 0);
+  document.getElementById('nn').classList.toggle('disabled', cur === total - 1);
+}
+
+document.getElementById('np').addEventListener('click', () => go(cur - 1));
+document.getElementById('nn').addEventListener('click', () => go(cur + 1));
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur + 1); }
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); go(cur - 1); }
+});
+
+go(0);
+</script>
+</body>
+</html>

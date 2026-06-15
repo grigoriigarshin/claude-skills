@@ -1,3 +1,6 @@
+node_modules/
 .DS_Store
+*.tar.gz
+qa-screenshots/
 materials/
 CLAUDE.md

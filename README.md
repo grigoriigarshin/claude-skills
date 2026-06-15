@@ -1,114 +1,32 @@
-# claude-skills
+# DH Claude Skills
 
-A collection of custom [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skills that provide domain-specific knowledge to Claude via structured reference files.
+Shared Claude Code skills for Delivery Hero colleagues.
 
-## What are Claude Code Skills?
-
-Skills are curated knowledge bundles that extend Claude Code with expertise on specific tools, platforms, or workflows. Each skill contains a `SKILL.md` definition and a set of reference files that Claude reads on-demand to answer questions accurately.
-
-## Available Skills
-
-| Skill | Description | Docs |
-|-------|-------------|------|
-| [gmlp](skills/gmlp/) | Delivery Hero's Global Machine Learning Platform — Metaflow, MLflow, Argo Workflows, GKE clusters, and more | [docs/gmlp.md](docs/gmlp.md) |
-| [arch-report](skills/arch-report/) | Generates a high-level `ARCHITECTURE.md` for Python ML/GenAI repositories — system overview, components, mermaid diagrams, tech stack, and deployment | [docs/arch-report.md](docs/arch-report.md) |
-| [create-skill](skills/create-skill/) | Creates and edits Claude Code skills (SKILL.md files) — scaffolds directories, writes frontmatter, optimizes descriptions for reliable triggering | [docs/create-skill.md](docs/create-skill.md) |
-
-## Installation
-
-Claude Code discovers skills from two locations:
-
-| Location | Path | Scope |
-|----------|------|-------|
-| Personal | `~/.claude/skills/<skill-name>/SKILL.md` | All your projects |
-| Project | `.claude/skills/<skill-name>/SKILL.md` | Current project only |
-
-### 1. Clone the repository
+## Install a skill
 
 ```bash
-git clone <repo-url> ~/claude-skills
+bash <(gh api repos/deliveryhero/claude-skills/contents/install.sh -H "Accept: application/vnd.github.raw") presentations
 ```
 
-### 2. Symlink the skill you want
+Replace `presentations` with the name of the skill you want.
 
-**For personal use** (available in all projects):
+**To update:** re-run the same command — it overwrites the existing install.
 
-```bash
-# Install the GMLP skill globally
-ln -s ~/claude-skills/skills/gmlp ~/.claude/skills/gmlp
-```
+## Available skills
 
-**For a specific project** (available only in that project):
+| Skill | Description | Extra setup |
+|---|---|---|
+| `presentations` | Create slide decks in the Service XP dark design language | Requires `npm` (installs Puppeteer for QA screenshots, ~150 MB) |
 
-```bash
-cd /path/to/your/project
-mkdir -p .claude/skills
-ln -s ~/claude-skills/skills/gmlp .claude/skills/gmlp
-```
+## Prerequisites
 
-You can also copy the skill folder instead of symlinking if you prefer a standalone copy.
+- `gh` CLI authenticated with your corporate GitHub account
+  — check with: `gh auth status`
+- `npm` — required for the `presentations` skill
 
-### 3. Verify
+## Adding a new skill (for maintainers)
 
-Start Claude Code in your project. The skill activates automatically when you ask a question matching its trigger keywords. For example, asking about Metaflow configuration will trigger the GMLP skill. You can also invoke it directly with `/gmlp` or check available skills by asking "What skills are available?"
-
-## Adding a New Skill
-
-1. Create a directory under `skills/`:
-   ```
-   skills/my-skill/
-   ├── SKILL.md
-   └── references/
-       ├── topic-a.md
-       └── topic-b.md
-   ```
-
-2. Write `SKILL.md` with YAML frontmatter and a body:
-   ```yaml
-   ---
-   name: my-skill
-   description: >
-     Keywords and phrases that should trigger this skill.
-     Be specific — include tool names, error messages, and common terms.
-   metadata:
-     author: Your Team
-     version: 1.0.0
-   ---
-
-   # My Skill
-
-   Overview and quick-answer patterns go here.
-
-   ## Reference File Router
-
-   | Topic keywords | Reference file |
-   |---|---|
-   | keyword1, keyword2 | `references/topic-a.md` |
-   | keyword3, keyword4 | `references/topic-b.md` |
-   ```
-
-3. Add reference files under `references/` — one file per topic, self-contained.
-
-4. Add a documentation page in `docs/` explaining the skill's purpose and coverage.
-
-## Repository Structure
-
-```
-claude-skills/
-├── CLAUDE.md              # Instructions for Claude Code when working on this repo
-├── README.md
-├── docs/                  # Skill documentation for humans
-│   ├── gmlp.md
-│   └── arch-report.md
-├── materials/             # Source docs used to build skills (gitignored)
-└── skills/                # Skill definitions
-    ├── gmlp/
-    │   ├── SKILL.md       # Skill entry point (frontmatter + overview)
-    │   └── references/    # Detailed topic files loaded on-demand
-    ├── arch-report/
-    │   └── SKILL.md       # Self-contained skill (no references needed)
-    └── create-skill/
-        ├── SKILL.md       # Skill creation workflow + templates
-        └── references/
-            └── complete-reference.md  # Frontmatter, description, anatomy, patterns
-```
+1. Create `skills/<skill-name>/SKILL.md` and any supporting files
+2. Add a `docs/<skill-name>.md` human-readable description
+3. Add a row to the table above
+4. The install script picks it up automatically — no changes needed to `install.sh`
