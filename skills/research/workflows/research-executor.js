@@ -6,7 +6,8 @@ export const meta = {
     { title: 'Gap Mapping', detail: 'Cohort split, CCR breakdown, temporal durability (metric gap only)' },
     { title: 'Analysis', detail: 'Execute plan phases sequentially, fresh context per phase, BQ data saved to disk' },
     { title: 'Synthesize', detail: 'Rank findings, resolve hypotheses, tag root causes' },
-    { title: 'Report', detail: 'Write structured report reading phase detail files from disk' }
+    { title: 'Report', detail: 'Write structured report reading phase detail files from disk' },
+    { title: 'Format report', detail: 'Rewrite into hypothesis-first structure with plain-writing rules' }
   ]
 }
 
@@ -309,5 +310,34 @@ await agent(`
     Render charts with ~/.claude/lib/render_chart.py via the chart venv.
   - Update plan frontmatter status to done when finished.
 `, { label: 'write-report', phase: 'Report', agentType: 'research-executor', model: 'claude-sonnet-4-6' })
+
+// ─── Phase 6: Format report ───────────────────────────────────────────────────
+const PLAIN_WRITING = `PLAIN WRITING RULES (mandatory — apply to every sentence you write):
+- No em-dashes. Rewrite the sentence.
+- No semicolons. Use a full stop or restructure.
+- No "not only X but also Y" constructions.
+- No filler: "it's worth noting", "furthermore", "in conclusion".
+- No corporate words: leverage, utilize, robust, seamless, comprehensive, holistic.
+- Active voice. Short words. Front-load: key point first in every paragraph.
+- Vary sentence length. Long sentence sets context, short one lands the point.
+- Use prose, not bullets, unless the content is genuinely a list.
+- Concrete over abstract: name the metric, give the number, name the product.`
+
+const REPORT_TEMPLATE = `REPORT STRUCTURE (follow this order exactly):
+1. Header block: experiment or research name, Eppo ID if applicable, data window, report date
+2. ## Summary — 3 bullet points max. Each is one sentence. What was found, what it means, what to do. No hedging.
+3. ## What we were investigating — 2–3 sentences on the business question and why it matters.
+4. ## Hypotheses — table with columns: ID | Hypothesis | Verdict. One row per hypothesis. Verdicts: Confirmed / Refuted / Inconclusive.
+5. ## Effect size (if applicable) — key quantitative estimate, confidence interval. Keep all numbers.
+6. ## Findings — one subsection per hypothesis (### H1 through ### Hn). State the hypothesis in plain language first. Then what the data showed. Keep all numbers.
+7. ## Sizing — ranked mechanism or finding table (keep all numbers), then 2–3 sentences of prose on total recoverable GMV or cost.
+8. ## What this analysis cannot answer — bullet list of genuine open questions only.
+9. ## Recommended fixes — numbered list, ranked by expected impact. One paragraph per fix.`
+
+phase('Format report')
+await agent(
+  `Read the file at ${reportDir}/report.md. Rewrite it into a cleaner structure, then write it back to the same path using the Write tool.\n\n${PLAIN_WRITING}\n\n${REPORT_TEMPLATE}\n\nDo not add findings that are not in the source material. Do not remove any findings or numbers. Preserve all tables with their data. Write the file and return nothing else.`,
+  { label: 'format-report', phase: 'Format report' }
+)
 
 return { status: synthesis.overall_status, planId: ingestion.plan_id, reportDir }
