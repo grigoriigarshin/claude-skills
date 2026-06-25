@@ -138,7 +138,7 @@ const SYNTHESIS_SCHEMA = {
 // (phases run independently and each assumes the dirs exist)
 await agent(
   `Run this shell command: mkdir -p "${reportDir}/queries" "${reportDir}/data" "${reportDir}/phases" "${reportDir}/charts". Return "done".`,
-  { label: 'mkdir-report-dirs', phase: 'Ingest & Validate' }
+  { label: 'mkdir-report-dirs', phase: 'Ingest & Validate', model: 'claude-haiku-4-5-20251001' }
 )
 
 // ─── Phase 1: Ingest & Validate ───────────────────────────────────────────────
@@ -163,7 +163,7 @@ const ingestion = await agent(`
      If a critical assumption fails and invalidates the whole plan, set abort: true.
 
   Return structured output.
-`, { label: 'ingest-validate', phase: 'Ingest & Validate', schema: INGESTION_SCHEMA })
+`, { label: 'ingest-validate', phase: 'Ingest & Validate', schema: INGESTION_SCHEMA, model: 'claude-haiku-4-5-20251001' })
 
 if (ingestion.abort) {
   log(`Plan aborted: ${ingestion.abort_reason}`)
@@ -193,9 +193,9 @@ if (ingestion.is_metric_gap_question) {
       Data quality: <issues or "none">
   `
   const [cohort, ccr, temporal] = await parallel([
-    () => agent(`${gapPromptBase}\nYour cut: COHORT SPLIT — compute metric separately for users who took each natural action (contacted vs not-contacted for HC research). Which cohort drives the gap?`, { label: 'gap-cohort', phase: 'Gap Mapping', schema: OBSERVATION_SCHEMA }),
-    () => agent(`${gapPromptBase}\nYour cut: CCR/LEAF BREAKDOWN — join experiment subjects to contacts, compute metric delta by CCR-L2. Which specific contact reasons account for the gap?`, { label: 'gap-ccr', phase: 'Gap Mapping', schema: OBSERVATION_SCHEMA }),
-    () => agent(`${gapPromptBase}\nYour cut: TEMPORAL DURABILITY — compute metric on rolling post-experiment cohort weekly. Does the gap persist or fade?`, { label: 'gap-temporal', phase: 'Gap Mapping', schema: OBSERVATION_SCHEMA })
+    () => agent(`${gapPromptBase}\nYour cut: COHORT SPLIT — compute metric separately for users who took each natural action (contacted vs not-contacted for HC research). Which cohort drives the gap?`, { label: 'gap-cohort', phase: 'Gap Mapping', schema: OBSERVATION_SCHEMA, model: 'claude-sonnet-4-6' }),
+    () => agent(`${gapPromptBase}\nYour cut: CCR/LEAF BREAKDOWN — join experiment subjects to contacts, compute metric delta by CCR-L2. Which specific contact reasons account for the gap?`, { label: 'gap-ccr', phase: 'Gap Mapping', schema: OBSERVATION_SCHEMA, model: 'claude-sonnet-4-6' }),
+    () => agent(`${gapPromptBase}\nYour cut: TEMPORAL DURABILITY — compute metric on rolling post-experiment cohort weekly. Does the gap persist or fade?`, { label: 'gap-temporal', phase: 'Gap Mapping', schema: OBSERVATION_SCHEMA, model: 'claude-sonnet-4-6' })
   ])
 
   for (const obs of [cohort, ccr, temporal].filter(Boolean)) {
@@ -240,7 +240,7 @@ for (const planPhase of ingestion.phases) {
         Data period: <exact start and end dates>
         Data quality: <issues or "none">
     - Check the stop condition from the plan. Log any deviations.
-  `, { label: `phase-${planPhase.id}`, phase: 'Analysis', schema: OBSERVATION_SCHEMA })
+  `, { label: `phase-${planPhase.id}`, phase: 'Analysis', schema: OBSERVATION_SCHEMA, model: 'claude-sonnet-4-6' })
 
   if (obs === null) {
     log(`Phase ${planPhase.id} failed — continuing without its observations`)
@@ -285,7 +285,7 @@ const synthesis = await agent(`
   3. Tag each root cause: [Hard Technical Failure] / [Operational Bottleneck] / [Behavioral Hypothesis].
   4. Build impact sizing table (formula, inputs, conversion factor source, confidence).
   5. Set overall_status: complete (all phases ran) / partial (some failed) / blocked.
-`, { label: 'synthesize', phase: 'Synthesize', schema: SYNTHESIS_SCHEMA })
+`, { label: 'synthesize', phase: 'Synthesize', schema: SYNTHESIS_SCHEMA, model: 'claude-sonnet-4-6' })
 
 // ─── Phase 5: Report ──────────────────────────────────────────────────────────
 phase('Report')
@@ -308,6 +308,6 @@ await agent(`
   - For charts: use the existing CSVs in ${reportDir}/data/ — do not re-run BQ queries.
     Render charts with ~/.claude/lib/render_chart.py via the chart venv.
   - Update plan frontmatter status to done when finished.
-`, { label: 'write-report', phase: 'Report', agentType: 'research-executor' })
+`, { label: 'write-report', phase: 'Report', agentType: 'research-executor', model: 'claude-sonnet-4-6' })
 
 return { status: synthesis.overall_status, planId: ingestion.plan_id, reportDir }
