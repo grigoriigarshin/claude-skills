@@ -134,15 +134,15 @@ const SYNTHESIS_SCHEMA = {
   }
 }
 
+// ─── Phase 1: Ingest & Validate ───────────────────────────────────────────────
+phase('Ingest & Validate')
+
 // Create report subdirectories upfront so phase agents can write immediately without checking
 // (phases run independently and each assumes the dirs exist)
 await agent(
   `Run this shell command: mkdir -p "${reportDir}/queries" "${reportDir}/data" "${reportDir}/phases" "${reportDir}/charts". Return "done".`,
   { label: 'mkdir-report-dirs', phase: 'Ingest & Validate', model: 'claude-haiku-4-5-20251001' }
 )
-
-// ─── Phase 1: Ingest & Validate ───────────────────────────────────────────────
-phase('Ingest & Validate')
 const ingestion = await agent(`
   Ingest the research plan at ${planPath}.
 
