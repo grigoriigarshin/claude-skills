@@ -10,6 +10,7 @@ if [ -z "$SKILL" ]; then
   echo ""
   echo "Available skills:"
   echo "  presentations   Create slide decks in the Service XP design language"
+  echo "  research        Research workflow: planner, executor, auditor"
   exit 1
 fi
 
@@ -37,6 +38,11 @@ cp -r "$EXTRACTED_DIR/skills/$SKILL" "$SKILLS_DIR/$SKILL"
 if [ -f "$SKILLS_DIR/$SKILL/package.json" ]; then
   echo "Installing npm dependencies (this may take a minute — Puppeteer downloads Chromium)..."
   npm install --prefix "$SKILLS_DIR/$SKILL" --silent
+fi
+
+if [ -f "$SKILLS_DIR/$SKILL/install-hook.sh" ]; then
+  echo "Running post-install setup..."
+  bash "$SKILLS_DIR/$SKILL/install-hook.sh"
 fi
 
 echo ""

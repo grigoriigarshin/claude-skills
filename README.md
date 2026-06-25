@@ -17,12 +17,14 @@ Replace `presentations` with the name of the skill you want.
 | Skill | Description | Extra setup |
 |---|---|---|
 | `presentations` | Create slide decks in the Service XP dark design language | Requires `npm` (installs Puppeteer for QA screenshots, ~150 MB) |
+| `research` | Research workflow for XP PMs: `/research-planner` → executor → `/audit` | Requires BigQuery + Atlassian MCP; access to `deliveryhero/data-platform-product` |
 
 ## Prerequisites
 
 - `gh` CLI authenticated with your corporate GitHub account
   — check with: `gh auth status`
 - `npm` — required for the `presentations` skill
+- BigQuery and Atlassian MCP configured in Claude Code — required for the `research` skill
 
 ## Adding a new skill (for maintainers)
 
