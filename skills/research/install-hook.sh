@@ -10,6 +10,10 @@ SKILL_DIR="$CLAUDE_DIR/skills/research"
 mkdir -p "$CLAUDE_DIR/skills/research-planner"
 cp "$SKILL_DIR/research-planner/skill.md" "$CLAUDE_DIR/skills/research-planner/"
 
+# audit skill wrapper
+mkdir -p "$CLAUDE_DIR/skills/audit"
+cp "$SKILL_DIR/audit/skill.md" "$CLAUDE_DIR/skills/audit/"
+
 # XP BQ reference files
 mkdir -p "$CLAUDE_DIR/skills/xp-research/reference"
 cp -r "$SKILL_DIR/xp-research/reference/." "$CLAUDE_DIR/skills/xp-research/reference/"
@@ -31,5 +35,6 @@ gh api repos/deliveryhero/data-platform-product/contents/.claude/skills/data-ana
 
 echo "Research workflow installed:"
 echo "  /research-planner — planning skill"
+echo "  /audit            — audit skill (spawns research-auditor agent)"
 echo "  research-executor — workflow (launched automatically by planner)"
-echo "  research-auditor  — audit agent (run /audit <report.md>)"
+echo "  research-auditor  — audit agent"
