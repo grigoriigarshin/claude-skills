@@ -11,6 +11,7 @@ if [ -z "$SKILL" ]; then
   echo "Available skills:"
   echo "  presentations   Create slide decks in the Service XP design language"
   echo "  research        Research workflow: planner, executor, auditor"
+  echo "  report          Project status reports published to Confluence"
   exit 1
 fi
 

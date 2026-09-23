@@ -18,12 +18,14 @@ Replace `research` with the name of the skill you want.
 |---|---|---|
 | `presentations` | Create slide decks in the Service XP dark design language | Requires `npm` (installs Puppeteer for QA screenshots, ~150 MB) |
 | `research` | Research workflow for XP PMs: `/research-planner` -> executor -> `/audit` | Requires BigQuery + Atlassian MCP; access to `deliveryhero/data-platform-product` |
+| `report` | Project status reports from Slack, Jira, decks and notes, published to a shared Confluence tree | Requires Atlassian MCP and rights to create pages in the reporting space. Slack MCP, `gws` and BigQuery are optional and each adds a source. See [docs/report.md](docs/report.md). |
 
 ## Prerequisites
 
 - `gh` CLI authenticated with your corporate GitHub account. Check with: `gh auth status`
 - `npm` for the `presentations` skill
 - BigQuery and Atlassian MCP configured in Claude Code for the `research` skill
+- Atlassian MCP for the `report` skill, plus permission to create pages in the reporting Confluence space
 
 ---
 
