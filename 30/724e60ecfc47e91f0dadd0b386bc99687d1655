@@ -1,0 +1,44 @@
+install.sh
+  s_1c2f441e47bf03::t_96b0d1ca01a0bc 14
+skills/report/SKILL.md
+  s_1c2f441e47bf03::t_3659d13014b66f 1-117
+skills/report/references/writing-rules.md
+  s_1c2f441e47bf03::t_491ae898e2c5e1 1-69
+docs/report.md
+  s_1c2f441e47bf03::t_9a8a4a65be4e77 33
+  s_1c2f441e47bf03::t_0a21c932fea128 1-32,34-91
+skills/report/references/gatherers.md
+  s_1c2f441e47bf03::t_9a8a4a65be4e77 58,84
+  s_1c2f441e47bf03::t_edd11bd62b9ad1 22,24
+  s_1c2f441e47bf03::t_b5ae2000078562 1-21,23,25-57,59-83
+README.md
+  s_1c2f441e47bf03::t_96b0d1ca01a0bc 21,28
+skills/report/references/new-project.md
+  s_1c2f441e47bf03::t_edd11bd62b9ad1 22,27
+  s_1c2f441e47bf03::t_cd2a3255f3114a 1-21,23-26,28-66
+skills/report/references/confluence.md
+  s_1c2f441e47bf03::t_edd11bd62b9ad1 33
+  s_1c2f441e47bf03::t_2a06ff58260a63 1-32,34-137
+skills/report/references/gws.md
+  s_1c2f441e47bf03::t_0575ecf7a2b7db 1-90
+skills/report/references/template.md
+  s_1c2f441e47bf03::t_edd11bd62b9ad1 9,28,32
+  s_1c2f441e47bf03::t_9a8a4a65be4e77 80
+  s_1c2f441e47bf03::t_89d67f171f0b41 1-8,10-27,29-31,33-79,81-161
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "30724e60ecfc47e91f0dadd0b386bc99687d1655",
+  "prompts": {},
+  "sessions": {
+    "s_1c2f441e47bf03": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5350caf9-8609-4ffb-a4dd-9c87d9621c07",
+        "model": "claude-opus-5"
+      },
+      "human_author": "unknown"
+    }
+  }
+}
