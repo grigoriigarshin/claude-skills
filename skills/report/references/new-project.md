@@ -37,7 +37,13 @@ Asked one field at a time the config is a wall, and setup is the worst place to 
 
 **Round one: owner and squad, cadence, and sources.**
 
-Ask for sources as **one open question**, never as a list of tool names. "What would you point someone at to see the state of this work?" Take whatever comes: channels, a spreadsheet, a doc, a task list, a deck, a link to something nobody can read. Asking separately about Jira, Slack and decks tells a person whose work is in none of them that the tool is not for them, which is exactly what happened the first time a designer tried it.
+Ask for sources as **one direct question**:
+
+> **Which sources should I read?** I found [what discovery turned up]. Add anything else: a spreadsheet, a doc, a task list, a board, a dashboard, anything you would open to check on this.
+
+Direct, and it names no specific tool. Both halves matter. "What would you point someone at to see the state of this work" is a question about how somebody thinks rather than a request for input, and people answer it slowly and badly. Asking separately about Jira, Slack and decks is worse: it tells a person whose work is in none of them that the tool is not for them, which is exactly what happened the first time a designer tried it.
+
+Generic categories are fine and help someone who does not know what counts. Named products are not, because each one implies a way of working that excludes somebody.
 
 Lead with what discovery already found, so the question is a confirmation rather than a memory test.
 
