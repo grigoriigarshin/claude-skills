@@ -31,19 +31,23 @@ resolved at each run, so a new iteration epic is picked up the day it is created
 
 **Never auto-select.** Discovery proposes, the person confirms. Present the clear match and the maybes separately, say what you discarded as noise, and never widen the search to fill a gap. A source nobody chose is worse than a missing one, because it shapes reports quietly and nobody traces back to it.
 
-## 3. Two rounds, never thirteen questions
+## 3. Two rounds, not a form
 
-The config has thirteen fields. Asked one at a time they are a wall, and setup is the worst place to lose someone because nothing has been produced yet.
+Asked one field at a time the config is a wall, and setup is the worst place to lose someone because nothing has been produced yet.
 
-**Round one.** Owner and squad. Cadence. Which of the discovered sources, plus anything missed. A Jira epic or filter, or skip.
+**Round one: owner and squad, cadence, and sources.**
 
-**Ask for sources as one open question**, never as a list of tool names. "What would you point someone at to see the state of this work?" Take whatever comes: channels, a spreadsheet, a doc, a task list, a deck, a link to something nobody can read. Do not ask separately about Jira, Slack and decks, because a person whose work is in none of them reads that as the tool not being for them, which is exactly what happened the first time a designer tried it.
+Ask for sources as **one open question**, never as a list of tool names. "What would you point someone at to see the state of this work?" Take whatever comes: channels, a spreadsheet, a doc, a task list, a deck, a link to something nobody can read. Asking separately about Jira, Slack and decks tells a person whose work is in none of them that the tool is not for them, which is exactly what happened the first time a designer tried it.
 
-**Round two.** Metrics, each with its unit, target and source.
+Lead with what discovery already found, so the question is a confirmation rather than a memory test.
 
-Everything else defaults and is never asked: `Lifecycle` is Active, `Extra sections` and `Context only` are empty, `Dashboards` and `Description` are blank. All of them are edited on the page later by anyone.
+**If one of their sources turns out to be Jira**, and only then, ask for a single epic or ticket rather than a filter. You can generalise from one key, and the durable filter comes out of that. Never make Jira a standing question.
 
-Metrics get their own round because each needs a query or a source, which is real thought. Mixed into a list of quick facts they get answered carelessly, and a vague metric definition is how a report ends up publishing the wrong number confidently.
+**Round two: metrics.** Each needs a name, a unit, a target and a source, where the source is a query, a dashboard they read off, or a number they supply.
+
+Metrics get their own round because each one is real thought. Mixed into a list of quick facts they get answered carelessly, and a vague metric definition is how a report publishes the wrong number confidently.
+
+**Everything else defaults and is never asked.** `Lifecycle` is Active, `Extra sections` and `Context only` are empty, `Description` is blank. All of them are edited on the page later by anyone.
 
 ## 4. Create the pages
 
