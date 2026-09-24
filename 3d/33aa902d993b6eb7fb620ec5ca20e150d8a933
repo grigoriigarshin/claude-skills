@@ -1,0 +1,28 @@
+skills/report/SKILL.md
+  s_1c2f441e47bf03::t_ff82edb809854c 9,46-62,69-70,144-155,188
+  s_1c2f441e47bf03::t_19844691ec789b 189
+docs/report.md
+  s_1c2f441e47bf03::t_d2f7c445eb056e 9,20,37-39,101-102
+skills/report/references/confluence.md
+  s_1c2f441e47bf03::t_85f1c2990a943e 32,64-65,135-145
+skills/report/references/new-project.md
+  s_1c2f441e47bf03::t_7184b5dad46190 38-44,60-61,66-70
+skills/report/references/template.md
+  s_1c2f441e47bf03::t_57d958b165312c 121-123
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "3d33aa902d993b6eb7fb620ec5ca20e150d8a933",
+  "prompts": {},
+  "sessions": {
+    "s_1c2f441e47bf03": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5350caf9-8609-4ffb-a4dd-9c87d9621c07",
+        "model": "claude-opus-5"
+      },
+      "human_author": "unknown"
+    }
+  }
+}
