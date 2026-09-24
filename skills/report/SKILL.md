@@ -6,7 +6,7 @@ description: >
   a weekly or monthly project report, a squad update, or to set up reporting for a project.
   Triggered by /report, /report new, /report <project>.
 metadata:
-  version: 0.2.0
+  version: 0.2.1
 ---
 
 # report — Project status reports
@@ -42,6 +42,21 @@ text ~ "xpr-reporting-root" AND type = page
 ```
 
 Only ask the person if both fail, and then say what you are asking for: the Confluence page holding one child page per project. Offer `--quick` as the way to get a report without it.
+
+## Listing the projects
+
+`/report` with no argument lists what exists. **Read the children of the root page directly** with `getConfluencePageDescendants` at depth 1. Do not use search: the index lags by minutes and returns partial results, and a project missing from the list is one the person will never report on.
+
+Drop anything that is a year folder (`<Project> YYYY`) or a metrics page (`<Project> Metrics`). Everything else is a project.
+
+For each one, read its config and show the owner, the cadence, and when the last report was. The list is how somebody finds their own project, so a bare list of names is not enough:
+
+```
+CFX      Junyu Pu    weekly     last: 2026-09-23
+Inbox    Ash Ghalia  biweekly   last: 2026-09-23
+```
+
+If the list has one entry, say so explicitly rather than presenting it as the only choice. A single-item list usually means the tree is new, not that the person has one project.
 
 ## Reporting several projects at once
 
