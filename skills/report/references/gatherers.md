@@ -37,6 +37,24 @@ Truncated: <yes, and how much was skipped | no>
 
 **Sources are expected to be English.** If one is not, say so and flag that you translated.
 
+## Working out what a source is
+
+The config gives you links and channel names, not types. Detect each one.
+
+| Looks like | Read with |
+|---|---|
+| `#channel`, or a `slack.com/archives/` link | Slack |
+| JQL, or a Jira issue or filter link | Jira |
+| `docs.google.com/spreadsheets/` | `gws sheets` |
+| `docs.google.com/document/` | `gws docs` |
+| `docs.google.com/presentation/` | `gws slides` |
+| `drive.google.com/drive/folders/` | `gws drive files list`, then detect each file by `mimeType` |
+| A Google Tasks list | `gws tasks` |
+| A Confluence page link | `getConfluencePage` |
+| Anything else | You cannot read it |
+
+**A source you cannot read is not a failure.** Dashboards, Notion pages, Figma files, anything without a reader: name it during phase 4 as something for the author to check and supply themselves. Say plainly that you could not read it. Never guess at its contents from its title, and never quietly drop it.
+
 ## Source types
 
 ### Slack
@@ -70,6 +88,22 @@ Design and ops teams often track their work in a spreadsheet rather than Jira. R
 **A sheet is a snapshot, not a log.** Rows carry current state, and unless there is a date column there is no way to tell what changed this period. So a sheet feeds `Status signals` and `Numbers`, and it cannot establish `Shipped`, which needs "since the last report". Set `Newest content` from a date column if one exists, otherwise from the file's `modifiedTime`.
 
 Ignore empty rows and anything below the last populated row. Cap at a few hundred rows and set `Truncated` if you hit it.
+
+### Docs
+
+A Google Doc is prose. Read it with `gws docs documents get`.
+
+Docs are usually one of two things, and they are read differently. A **living document**, such as a plan or a spec, is current state with no history, so use it for `Status signals` and set `Newest content` from `modifiedTime`. A **dated log**, such as recurring meeting notes in one file, has sections you can window the same way as a deck.
+
+Look for dated headings before deciding which it is. Say which you concluded.
+
+### Tasks
+
+Task lists are common for ops and for anyone who does not live in Jira. Read with `gws tasks`.
+
+Completed tasks with a completion date inside the window are the closest any source gets to `Shipped`, though the same caution as Jira applies: a completed task is usually internal work rather than a launch. Open tasks with a due date in the past are `Risks and blockers`. Everything else is `Status signals`.
+
+Task titles are terse and often lack an owner. Return `who: not stated` rather than assuming the list owner did the work.
 
 ### Transcripts
 

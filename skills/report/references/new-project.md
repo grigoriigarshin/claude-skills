@@ -37,7 +37,7 @@ The config has thirteen fields. Asked one at a time they are a wall, and setup i
 
 **Round one.** Owner and squad. Cadence. Which of the discovered sources, plus anything missed. A Jira epic or filter, or skip.
 
-Ask for sources in a way that does not assume Jira. Not everyone tracks work there: design and ops frequently live in a Google Sheet, and a person whose work is not in Jira will read a Jira-shaped question as "this tool is not for me". Ask what they would point someone at to see the state of the work, and take whatever comes.
+**Ask for sources as one open question**, never as a list of tool names. "What would you point someone at to see the state of this work?" Take whatever comes: channels, a spreadsheet, a doc, a task list, a deck, a link to something nobody can read. Do not ask separately about Jira, Slack and decks, because a person whose work is in none of them reads that as the tool not being for them, which is exactly what happened the first time a designer tried it.
 
 **Round two.** Metrics, each with its unit, target and source.
 

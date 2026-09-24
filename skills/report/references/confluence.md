@@ -29,15 +29,16 @@ A table on the project parent page, inside a collapsed expand so a human reading
 | Squad | Report header, metadata token |
 | Lifecycle | `Active` / `Paused` / `Done`. Warn before reporting on a Done project. |
 | Cadence | Period label and gather window |
-| Slack channels | Gatherer targets |
-| Jira filter | JQL, or a resolvable pattern such as `parent in (epics matching "<keyword>")` |
-| Decks | A Slides link, or a Drive folder meaning the most recently modified deck |
-| Sheets | A Google Sheet holding tracked work. Common for design and ops, who often live in a sheet rather than Jira. |
-| Meeting notes | Drive folder |
-| Dashboards | Shown to the author when asking for numbers |
+| Sources | One per line. Anything: a Slack channel, a JQL filter, a link to a sheet, doc, deck, Drive folder, task list or Confluence page. |
+| Context only | Which of those sources are read but never quoted. See below. |
 | Key metrics | Link to the `<Project> Metrics` page |
 | Extra sections | Appended between Metrics and Risks and blockers |
-| Context only | Sources read but never quoted. See below. |
+
+**`Sources` is one list, not a field per tool.** Earlier drafts had a field each for Slack, Jira, decks and sheets, and it was wrong every time somebody new tried it: a designer tracks work in a spreadsheet, ops in a task list, another team in Notion. Enumerating tools in the config means a release every time somebody names one.
+
+So the config takes links and the skill works out what each one is at run time. `gatherers.md` has the detection table. A source nobody can read is not a failure: it is shown to the author during phase 4 as something to check themselves, which is what the old `Dashboards` field did and is now just what happens to any unreadable link.
+
+Ask for sources as "what would you point someone at to see the state of this work", never as a list of tool names.
 
 **Read the config, do not parse it.** Fetch the page as markdown and read the fields out of it. No XHTML parser, no fixed columns. Confluence's editor will eventually mangle that table, and a model reading a slightly broken table still gets the channels out of it. Unknown fields are ignored, one warning for anything unreadable, and a half-filled config still produces a report.
 
