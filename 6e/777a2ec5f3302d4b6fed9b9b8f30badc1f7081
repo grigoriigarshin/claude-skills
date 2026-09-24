@@ -1,0 +1,19 @@
+skills/report/references/new-project.md
+  s_1c2f441e47bf03::t_831be230feae55 34,36,38,40,42,44,46-50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "6e777a2ec5f3302d4b6fed9b9b8f30badc1f7081",
+  "prompts": {},
+  "sessions": {
+    "s_1c2f441e47bf03": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5350caf9-8609-4ffb-a4dd-9c87d9621c07",
+        "model": "claude-opus-5"
+      },
+      "human_author": "unknown"
+    }
+  }
+}
