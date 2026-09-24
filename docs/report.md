@@ -6,7 +6,7 @@ Writes a project status report from your Slack channels, Jira, decks, meeting no
 bash <(gh api repos/grigoriigarshin/claude-skills/contents/install.sh -H "Accept: application/vnd.github.raw") report
 ```
 
-**Current version: 0.1.3.** Check yours with `head -12 ~/.claude/skills/report/SKILL.md`.
+**Current version: 0.2.0.** Check yours with `head -12 ~/.claude/skills/report/SKILL.md`.
 
 ## Update
 
@@ -59,6 +59,18 @@ At review, three things need you:
 - **Anything it left out**, told to you in chat and never written into the report.
 
 Correcting something patches that section only. It does not redraft everything else behind your back.
+
+## Several projects at once
+
+```
+/report all
+```
+
+Takes every project you own that is due, gathers for all of them in one go, then walks you through them one at a time.
+
+The saving is in the gathering, which is the slow part and runs in parallel. Approval is not batched: each report still gets your confirmation on status and on anything risky, because a batch you clicked through is not a batch you checked.
+
+It tells you what is coming and leads with whatever needs you most. `/report all --any` ignores the due dates, and `/report all cfx inbox` takes exactly those two.
 
 ## The shape
 

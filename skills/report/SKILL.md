@@ -6,7 +6,7 @@ description: >
   a weekly or monthly project report, a squad update, or to set up reporting for a project.
   Triggered by /report, /report new, /report <project>.
 metadata:
-  version: 0.1.3
+  version: 0.2.0
 ---
 
 # report — Project status reports
@@ -22,6 +22,7 @@ Writes one report about one project for one period, in a fixed shape, and publis
 | `/report` | Lists the projects that exist |
 | `/report <project>` | The full flow: gather, ask, draft, review, publish |
 | `/report <project> --quick` | Skips gathering. Paste, draft, publish. Works with no project page at all, producing markdown only. |
+| `/report all` | Every project you own that is due. Gathers for all of them at once, then reviews them one at a time. |
 | `/report new` | Discovers sources, creates the project pages, then runs a real report |
 
 ## First run
@@ -41,6 +42,29 @@ text ~ "xpr-reporting-root" AND type = page
 ```
 
 Only ask the person if both fail, and then say what you are asking for: the Confluence page holding one child page per project. Offer `--quick` as the way to get a report without it.
+
+## Reporting several projects at once
+
+`/report all` exists because gathering is the slow part and it parallelises. Approval does not, and is not batched.
+
+**Scope.** Projects where you are the `Owner` and a report is due. Due means the last report's date plus the cadence has passed. Get your name from `atlassianUserInfo` and match it against each project's config, and ask if that fails rather than guessing.
+
+`/report all --any` takes every project you own whether due or not. `/report all cfx inbox` takes exactly those.
+
+**Cap at five.** Each project costs a gather plus a draft in this context. Beyond five, report the rest separately and say so.
+
+**One fan-out.** Resolve and load every project, then dispatch all gatherers for all projects in a single parallel round. Five sources across three projects is fifteen subagents at once, not three rounds of five.
+
+**Then one report at a time, each fully reviewed and published before the next.** Every report gets its own status confirmation, its own metric checks, its own omission report. Nothing is batch-approved. A report that has been read once is not a report that has been checked, and the failure this guards against is one wrong number published under somebody's name.
+
+**Order the queue by what needs attention.** After drafting, say what is coming and put the demanding one first:
+
+> Three ready. CFX first: status moved to At risk and two numbers came from Slack.
+> Then Inbox and Comms, both unchanged from last period.
+
+That is ordering and expectation-setting, not permission to skip anything.
+
+**Each project stands alone.** A failure on the third must not lose the two already published. Report what succeeded, what failed and why, and let the person retry just the failure.
 
 ## The seven phases
 
