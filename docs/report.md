@@ -12,7 +12,7 @@ bash <(gh api repos/grigoriigarshin/claude-skills/contents/install.sh -H "Accept
 
 - Claude Code with the **Atlassian MCP** connected. Without it there is no project to resolve, no config to read and nothing to publish. `/report <project> --quick` still works and hands you markdown.
 - Permission to create child pages in the Confluence space holding the reporting tree. Check with whoever owns the space.
-- A reporting root page in Confluence. The skill finds it by itself on first run and remembers it. If it cannot, it asks, and the answer is the page holding one child page per project. Ask whoever set up reporting for your product line.
+- Nothing else. The skill already knows the [Service reporting root](https://atlassian.cloud.deliveryhero.group/wiki/spaces/GCC/pages/2223505420/Service+Reporting) and caches it on first run.
 
 **Optional, and each one makes the report better**
 
