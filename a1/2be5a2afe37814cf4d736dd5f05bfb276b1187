@@ -1,0 +1,27 @@
+docs/report.md
+  s_fcbe5afe768aa2::t_610307c5a30fc4 9,26,39-40
+skills/report/SKILL.md
+  s_fcbe5afe768aa2::t_acba08f0f92088 9,111
+skills/report/references/confluence.md
+  s_fcbe5afe768aa2::t_f5ed8e45fb45e9 35
+skills/report/references/gatherers.md
+  s_fcbe5afe768aa2::t_9aa5e50e75d1e3 64-73
+skills/report/references/new-project.md
+  s_fcbe5afe768aa2::t_31b54866118628 18,40-41
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "a12be5a2afe37814cf4d736dd5f05bfb276b1187",
+  "prompts": {},
+  "sessions": {
+    "s_fcbe5afe768aa2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bd92d4e6-6f40-4c20-9783-415025469105",
+        "model": "unknown"
+      },
+      "human_author": "unknown"
+    }
+  }
+}
