@@ -26,9 +26,25 @@ Writes one report about one project for one period, in a fixed shape, and publis
 
 ## First run
 
-The skill needs the URL of the reporting root page, once. Ask for it and store it in `~/.claude/xp-reporting/config.json` as `{"rootPageUrl": "...", "cloudId": "..."}`. Never hard-code it here.
+The skill needs the reporting root page once, and stores it in `~/.claude/xp-reporting/config.json` as `{"rootPageUrl": "...", "rootPageId": "...", "cloudId": "..."}`. Never hard-code it here.
 
-If that file is missing, ask before doing anything else.
+**Find it, do not ask for it.** The root page carries the marker `xpr-reporting-root` in its body. Search for it:
+
+```
+text ~ "xpr-reporting-root" AND type = page
+```
+
+| Result | Do |
+|---|---|
+| Exactly one | Use it. Say which page you found and carry on without waiting. |
+| Several | Ask which one, listing the space and title of each |
+| None | Ask, and say what you are asking for |
+
+Get `cloudId` from the URL host, or from `getAccessibleAtlassianResources`.
+
+**When you have to ask, make the question answerable.** A bare "what is the URL of the reporting root page?" is unanswerable by someone who has never seen the tree, and it is the first thing a new user meets. Say instead: this is the Confluence page that holds one child page per project, ask whoever set up reporting for your product line, and paste the URL here. Offer `--quick` as the way to get a report right now without it.
+
+Confluence's search index lags by minutes, so a root page created moments ago will not be found. That is a reason to keep the ask path good, not to skip the search.
 
 ## The seven phases
 
