@@ -154,7 +154,10 @@ Last element on every published page, inside a collapsed expand.
 xpr-squad-<squad> · xpr-delivery-<status> · xpr-impact-<status>
 xpr-cadence-<cadence> · xpr-period-<token> · xpr-has-decisions
 xpr-hash: <hash of the body> · xpr-template: 1
+xpr-generated-by: <whoever ran the skill>
 ```
+
+`xpr-generated-by` is whoever ran the skill, which is often not the `Owner` in the header. Confluence records the page author too, but the token keeps it visible without opening the history.
 
 Period tokens: `xpr-period-2026-cw38`, `-2026-cw37-38`, `-2026-09`, `-2026-q3`, or a slug for ad-hoc. `xpr-has-decisions` only when that section has content.
 

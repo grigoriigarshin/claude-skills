@@ -55,6 +55,8 @@ The config gives you links and channel names, not types. Detect each one.
 
 **A source you cannot read is not a failure.** Dashboards, Notion pages, Figma files, anything without a reader: name it during phase 4 as something for the author to check and supply themselves. Say plainly that you could not read it. Never guess at its contents from its title, and never quietly drop it.
 
+Metrics are not gathered from this list. Each one has its own source on the project's Metrics page, which may be a SQL query you run, a dashboard the author reads off, or a number they supply.
+
 ## Source types
 
 ### Slack

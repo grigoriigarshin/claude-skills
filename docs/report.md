@@ -6,7 +6,7 @@ Writes a project status report from your Slack channels, Jira, decks, meeting no
 bash <(gh api repos/grigoriigarshin/claude-skills/contents/install.sh -H "Accept: application/vnd.github.raw") report
 ```
 
-**Current version: 0.4.0.** Check yours with `head -12 ~/.claude/skills/report/SKILL.md`.
+**Current version: 0.5.0.** Check yours with `head -12 ~/.claude/skills/report/SKILL.md`.
 
 ## Update
 
@@ -24,7 +24,7 @@ Re-run the install command. It replaces the skill folder and leaves your cached 
 
 - Slack MCP, for channel gathering. This is usually where most of the value is.
 - `gws` CLI, for anything in Google Workspace: Docs, Sheets, Slides, Drive folders, Tasks. `brew install googleworkspace-cli` plus gcloud ADC.
-- BigQuery, if any of your metrics are defined as a SQL query.
+- BigQuery, if any of your metrics are defined as a SQL query. Metrics are defined on their own page, separately from your sources, and each one can be a query, a dashboard you read off, or a number you supply.
 
 The skill degrades rather than failing. A missing source is skipped and named.
 
@@ -53,6 +53,8 @@ It finishes by generating a real report.
 The skill reads your configured sources in parallel, asks up to four questions about anything genuinely missing, drafts, and shows it to you.
 
 **Every question has a safe default.** Ignore the whole thing and you still get a correct report, just a sparser one.
+
+If the project is not yours, it checks once before starting: *"CFX is owned by Junyu Pu. Reporting on his behalf?"* Anyone can report on any project, and covering for someone on holiday is normal. Doing it by accident because you picked the wrong name off a list is not. The report still shows the owner in its header, and records who generated it.
 
 At review, three things need you:
 

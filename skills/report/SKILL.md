@@ -6,7 +6,7 @@ description: >
   a weekly or monthly project report, a squad update, or to set up reporting for a project.
   Triggered by /report, /report new, /report <project>.
 metadata:
-  version: 0.4.0
+  version: 0.5.0
 ---
 
 # report — Project status reports
@@ -105,6 +105,14 @@ Read `references/confluence.md`. Read the project's config table and the most re
 Derive the period label and the gather window from `Cadence`. Always prefer the last report's date over the cadence default so a skipped period leaves no hole. Cap the window at 90 days and say so.
 
 If Confluence fails, use the cache and say how old it is. If nothing is cached, degrade to `--quick` with no project page.
+
+**If you are not the project's owner, say so before gathering.** Compare your name from `atlassianUserInfo` against the config `Owner`. When they differ, one line and a yes:
+
+> CFX is owned by Junyu Pu. Reporting on his behalf?
+
+Ask here rather than after drafting, so a wrong project costs a sentence instead of a full gather. This is a check, not a permission system: anyone may report on any project, and reporting for a colleague who is away is a normal thing to do. What is not normal is doing it by accident, which is what happens when somebody picks the wrong name off a list.
+
+The report header still shows the config `Owner`, never you. Record yourself in the metadata block as `xpr-generated-by`, so a report written on someone's behalf says so.
 
 ### 3. Gather
 

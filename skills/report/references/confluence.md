@@ -40,6 +40,10 @@ So the config takes links and the skill works out what each one is at run time. 
 
 Ask for sources as "what would you point someone at to see the state of this work", never as a list of tool names.
 
+**`Sources` is for narrative, the Metrics page is for numbers.** They are separate on purpose and collapsing the source fields did not merge them. `Sources` answers what is happening: what shipped, what is stuck, what was decided. Every number comes from the Metrics page instead, where each metric carries its own source, and that source can be a SQL query.
+
+A query does not belong in `Sources`. Untethered from a metric it produces a number with no name, no unit and no target, which is the ambiguity the Metrics page exists to remove.
+
 **Read the config, do not parse it.** Fetch the page as markdown and read the fields out of it. No XHTML parser, no fixed columns. Confluence's editor will eventually mangle that table, and a model reading a slightly broken table still gets the channels out of it. Unknown fields are ignored, one warning for anything unreadable, and a half-filled config still produces a report.
 
 **`Context only` sources are read and never quoted.** A PMO or coordination channel often holds the clearest picture of a project alongside things that should not appear on a page the whole product line reads. Nothing from them enters the draft, and they are left out of the source footer, because naming a private channel reveals it exists. Tell the author in chat what was found there and let them decide what to say in their own words. This is a prompt-level control, not a mechanical one: a source that must never leak should not be configured at all.
