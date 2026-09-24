@@ -1,0 +1,23 @@
+docs/report.md
+  s_fcbe5afe768aa2::t_89eeb7e3aaa3c2 9,39
+skills/report/SKILL.md
+  s_fcbe5afe768aa2::t_1944396d84ba55 9
+skills/report/references/new-project.md
+  s_fcbe5afe768aa2::t_b218c237dfd73e 40-46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "dc62e8f350f9cd7fd3c4a5b9302b59ef9799701f",
+  "prompts": {},
+  "sessions": {
+    "s_fcbe5afe768aa2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bd92d4e6-6f40-4c20-9783-415025469105",
+        "model": "unknown"
+      },
+      "human_author": "unknown"
+    }
+  }
+}
