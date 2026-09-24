@@ -61,6 +61,16 @@ See `gws.md` for access. **Never put a full deck into the response or the contex
 
 Use only sections inside the window. When a metric appears in two sections, take the later one. A deck with no dated sections falls back to `modifiedTime`, and you read only the most recent slides.
 
+### Sheets
+
+Design and ops teams often track their work in a spreadsheet rather than Jira. Read it with `gws sheets spreadsheets values get`.
+
+**A sheet has no schema you can assume.** Read the header row first and work out which columns carry the item, the status, the owner and any dates. Say in your return what you inferred, so a wrong guess is visible rather than silent. If the headers are unreadable or the sheet has no obvious structure, return nothing and say why. A misread sheet produces confident nonsense.
+
+**A sheet is a snapshot, not a log.** Rows carry current state, and unless there is a date column there is no way to tell what changed this period. So a sheet feeds `Status signals` and `Numbers`, and it cannot establish `Shipped`, which needs "since the last report". Set `Newest content` from a date column if one exists, otherwise from the file's `modifiedTime`.
+
+Ignore empty rows and anything below the last populated row. Cap at a few hundred rows and set `Truncated` if you hit it.
+
 ### Transcripts
 
 Meeting transcripts arrive as Google Docs, pasted as a link or found in the configured folder. Read via `gws`.

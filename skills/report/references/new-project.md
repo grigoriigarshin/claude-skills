@@ -15,7 +15,7 @@ Discovery works for some source types and actively misleads for others.
 | Source | Method | What to expect |
 |---|---|---|
 | **Slack** | Search channel names for the project name | Works well. One real project returned 14 channels and the author picked seven plus one as `Context only`. Another returned one obvious match, two maybes and ten incident channels. Channel names are deliberate, which is why this works. |
-| **Drive and decks** | `gws drive files list` with `name contains "<project>"` | Works. Returns the deck, its PRD and any stale copies, with `modifiedTime` to rank them. |
+| **Drive: decks, docs and sheets** | `gws drive files list` with `name contains "<project>"` | Works. Returns decks, PRDs, tracking sheets and any stale copies, with `modifiedTime` to rank them. Check `mimeType`, because a spreadsheet and a deck are read differently. |
 | **Confluence** | Near-match existing project pages | Works, and it is what stops step 1 creating a duplicate |
 | **Jira** | **Do not search** | Fails badly. A text search for one project name returned tickets from twelve unrelated projects. Another returned fifteen results with none relevant, because the word appears in any ticket mentioning an email inbox. A project-name search returned nothing at all. |
 
@@ -36,6 +36,8 @@ resolved at each run, so a new iteration epic is picked up the day it is created
 The config has thirteen fields. Asked one at a time they are a wall, and setup is the worst place to lose someone because nothing has been produced yet.
 
 **Round one.** Owner and squad. Cadence. Which of the discovered sources, plus anything missed. A Jira epic or filter, or skip.
+
+Ask for sources in a way that does not assume Jira. Not everyone tracks work there: design and ops frequently live in a Google Sheet, and a person whose work is not in Jira will read a Jira-shaped question as "this tool is not for me". Ask what they would point someone at to see the state of the work, and take whatever comes.
 
 **Round two.** Metrics, each with its unit, target and source.
 

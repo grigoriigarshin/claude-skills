@@ -6,7 +6,7 @@ Writes a project status report from your Slack channels, Jira, decks, meeting no
 bash <(gh api repos/grigoriigarshin/claude-skills/contents/install.sh -H "Accept: application/vnd.github.raw") report
 ```
 
-**Current version: 0.2.0.** Check yours with `head -12 ~/.claude/skills/report/SKILL.md`.
+**Current version: 0.3.0.** Check yours with `head -12 ~/.claude/skills/report/SKILL.md`.
 
 ## Update
 
@@ -23,7 +23,7 @@ Re-run the install command. It replaces the skill folder and leaves your cached 
 **Optional, and each one makes the report better**
 
 - Slack MCP, for channel gathering. This is usually where most of the value is.
-- `gws` CLI, for decks, Docs and meeting notes. `brew install googleworkspace-cli` plus gcloud ADC.
+- `gws` CLI, for decks, Docs, Sheets and meeting notes. `brew install googleworkspace-cli` plus gcloud ADC.
 - BigQuery, if any of your metrics are defined as a SQL query.
 
 The skill degrades rather than failing. A missing source is skipped and named.
@@ -35,6 +35,8 @@ The skill degrades rather than failing. A missing source is skipped and named.
 ```
 
 It searches Slack and Drive for anything matching the project name, shows you what it found, and asks two rounds of questions: the basics and your sources, then your metrics. Everything else takes a default.
+
+**It does not assume your work is in Jira.** Design and ops teams often track everything in a Google Sheet, and that is a source like any other. Point it at whatever you would show someone who asked about the state of the work.
 
 It will ask for **one Jira ticket or epic** rather than searching Jira itself. Jira full-text search is unusable for this, because searching a project name returns tickets from a dozen unrelated projects.
 

@@ -32,6 +32,7 @@ A table on the project parent page, inside a collapsed expand so a human reading
 | Slack channels | Gatherer targets |
 | Jira filter | JQL, or a resolvable pattern such as `parent in (epics matching "<keyword>")` |
 | Decks | A Slides link, or a Drive folder meaning the most recently modified deck |
+| Sheets | A Google Sheet holding tracked work. Common for design and ops, who often live in a sheet rather than Jira. |
 | Meeting notes | Drive folder |
 | Dashboards | Shown to the author when asking for numbers |
 | Key metrics | Link to the `<Project> Metrics` page |

@@ -6,7 +6,7 @@ description: >
   a weekly or monthly project report, a squad update, or to set up reporting for a project.
   Triggered by /report, /report new, /report <project>.
 metadata:
-  version: 0.2.1
+  version: 0.3.0
 ---
 
 # report — Project status reports
@@ -108,7 +108,7 @@ If Confluence fails, use the cache and say how old it is. If nothing is cached, 
 
 ### 3. Gather
 
-Read `references/gatherers.md`, and `references/gws.md` if any Google source is configured.
+Read `references/gatherers.md`, and `references/gws.md` if any Google source is configured: decks, sheets or meeting notes.
 
 Dispatch one subagent per source, in parallel, on a small fast model. Each returns the fixed contract in `gatherers.md` and nothing else. **Raw source content must never enter this context.** A single Jira query can exceed the whole context budget.
 
