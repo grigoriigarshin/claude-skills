@@ -6,7 +6,7 @@ description: >
   a weekly or monthly project report, a squad update, or to set up reporting for a project.
   Triggered by /report, /report new, /report <project>.
 metadata:
-  version: 0.1.0
+  version: 0.1.3
 ---
 
 # report — Project status reports

@@ -6,6 +6,12 @@ Writes a project status report from your Slack channels, Jira, decks, meeting no
 bash <(gh api repos/grigoriigarshin/claude-skills/contents/install.sh -H "Accept: application/vnd.github.raw") report
 ```
 
+**Current version: 0.1.3.** Check yours with `head -12 ~/.claude/skills/report/SKILL.md`.
+
+## Update
+
+Re-run the install command. It replaces the skill folder and leaves your cached config in `~/.claude/xp-reporting/` alone, so you do not redo setup. Start a new Claude Code session afterwards, because a running one has already loaded the old copy.
+
 ## Before you start
 
 **Required**
