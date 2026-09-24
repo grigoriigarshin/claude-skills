@@ -35,7 +35,13 @@ resolved at each run, so a new iteration epic is picked up the day it is created
 
 Asked one field at a time the config is a wall, and setup is the worst place to lose someone because nothing has been produced yet.
 
-**Round one: owner and squad, cadence, and sources.**
+**Round one: where it goes, owner and squad, cadence, and sources.**
+
+Ask the destination first, because it changes what gets created:
+
+> Should reports go to the shared Confluence tree, where the product line and the monthly roll-up can read them, or stay as files on your machine?
+
+Do not probe for Confluence permissions to decide this. Someone may have the rights and still want to keep a project local, and someone without them should hear a question rather than an error.
 
 Ask for sources as **one direct question**:
 
@@ -51,11 +57,17 @@ Lead with what discovery already found, so the question is a confirmation rather
 
 **Round two: metrics.** Each needs a name, a unit, a target and a source, where the source is a query, a dashboard they read off, or a number they supply.
 
+**Ask for the target, never infer it.** A number in a deck is a forecast somebody wrote down, not a commitment, and turning it into a target invents an agreement nobody made. "No target yet" is a fine answer and the column simply will not appear.
+
 Metrics get their own round because each one is real thought. Mixed into a list of quick facts they get answered carelessly, and a vague metric definition is how a report publishes the wrong number confidently.
 
 **Everything else defaults and is never asked.** `Lifecycle` is Active, `Extra sections` and `Context only` are empty, `Description` is blank. All of them are edited on the page later by anyone.
 
-## 4. Create the pages
+## 4. Create what the destination needs
+
+**Local:** write `~/.claude/xp-reporting/projects/<slug>/config.md` and nothing else. Say where it is.
+
+**Shared:**
 
 ```
 <Project>                    description, then config table in a collapsed expand

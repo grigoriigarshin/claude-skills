@@ -6,7 +6,7 @@ Writes a project status report from your Slack channels, Jira, decks, meeting no
 bash <(gh api repos/grigoriigarshin/claude-skills/contents/install.sh -H "Accept: application/vnd.github.raw") report
 ```
 
-**Current version: 0.5.1.** Check yours with `head -12 ~/.claude/skills/report/SKILL.md`.
+**Current version: 0.6.0.** Check yours with `head -12 ~/.claude/skills/report/SKILL.md`.
 
 ## Update
 
@@ -17,7 +17,7 @@ Re-run the install command. It replaces the skill folder and leaves your cached 
 **Required**
 
 - Claude Code with the **Atlassian MCP** connected. Without it there is no project to resolve, no config to read and nothing to publish. `/report <project> --quick` still works and hands you markdown.
-- Permission to create child pages in the Confluence space holding the reporting tree. Check with whoever owns the space.
+- Permission to create child pages in the reporting space, **only if you want reports published there**. Setup asks where reports should go, and "a file on my machine" is a real answer. Sensitive projects and first tries both belong there.
 - Nothing else. The skill already knows the [Service reporting root](https://atlassian.cloud.deliveryhero.group/wiki/spaces/GCC/pages/2223505420/Service+Reporting) and caches it on first run.
 
 **Optional, and each one makes the report better**
@@ -34,7 +34,9 @@ The skill degrades rather than failing. A missing source is skipped and named.
 /report new
 ```
 
-It searches Slack and Drive for anything matching the project name, shows you what it found, and asks two rounds of questions: the basics and your sources, then your metrics. Everything else takes a default.
+First it asks where reports should go: the shared Confluence tree, or files on your machine. Then it searches Slack and Drive for anything matching the project name, shows you what it found, and asks two rounds: the basics and your sources, then your metrics. Everything else takes a default.
+
+A local project can move to shared later. Run `/report new` again with the same name and pick shared.
 
 **It does not assume your work is in Jira.** Setup asks one direct question: which sources should I read? Channels, a spreadsheet, a doc, a task list, a deck, all of them. It works out what each one is and reads what it can. Anything it cannot read, such as a dashboard or a Figma file, it shows you to fill in yourself rather than dropping.
 
@@ -95,6 +97,8 @@ A rollout project and a discovery project produce reports that look nothing alik
 The order **within** a section is not fixed. The skill ranks items and leads with what matters most, which is the judgement a report exists to carry.
 
 ## Things worth knowing
+
+**A source that fails is not a source that is empty.** If a channel you configured turns out to be private to you, or your Slack auth has expired, it says so before drafting rather than quietly producing a report with the risks missing. Access differs per person, so the same project can read differently for a colleague.
 
 **Your edits win.** Once published, if you fix something on the page by hand, the skill never overwrites it. Next period's report compares against your corrected version, so fixing a number by hand improves every report after it.
 

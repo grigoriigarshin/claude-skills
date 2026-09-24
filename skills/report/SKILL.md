@@ -6,7 +6,7 @@ description: >
   a weekly or monthly project report, a squad update, or to set up reporting for a project.
   Triggered by /report, /report new, /report <project>.
 metadata:
-  version: 0.5.1
+  version: 0.6.0
 ---
 
 # report — Project status reports
@@ -43,11 +43,30 @@ text ~ "xpr-reporting-root" AND type = page
 
 Only ask the person if both fail, and then say what you are asking for: the Confluence page holding one child page per project. Offer `--quick` as the way to get a report without it.
 
+## Where reports go
+
+Every project is either **shared** or **local**, chosen once at `/report new` and stored as `Destination` in its config.
+
+| | Shared | Local |
+|---|---|---|
+| Report lands | Confluence, under the project's year folder | `~/.claude/xp-reporting/reports/<project>-<date>.md` |
+| Config lives | The project's Confluence parent page | `~/.claude/xp-reporting/projects/<slug>/config.md` |
+| Who sees it | The product line, and the monthly roll-up | Only this person |
+| Continuity | The last published page | The last local file |
+
+Local exists for three real cases: somebody trying the skill before committing to publish, a project too sensitive for a tree the whole product line reads, and anyone without rights to create pages in the space. Never probe for those rights, just ask where the report should go.
+
+Everything else is identical. Same shape, same gathering, same review. A local project can be moved to shared later by running `/report new` again with the same name and choosing shared, which creates the pages and publishes from then on.
+
+`--quick` is always local, whatever the project's setting.
+
 ## Listing the projects
 
 `/report` with no argument lists what exists. **Read the children of the root page directly** with `getConfluencePageDescendants` at depth 1. Do not use search: the index lags by minutes and returns partial results, and a project missing from the list is one the person will never report on.
 
 Drop anything that is a year folder (`<Project> YYYY`) or a metrics page (`<Project> Metrics`). Everything else is a project.
+
+List local projects too, from `~/.claude/xp-reporting/projects/`, and mark them so nobody wonders why a colleague cannot see one.
 
 For each one, read its config and show the owner, the cadence, and when the last report was. The list is how somebody finds their own project, so a bare list of names is not enough:
 
@@ -122,6 +141,18 @@ Dispatch one subagent per source, in parallel, on a small fast model. Each retur
 
 Three input tiers, all optional: text pasted into the invocation, links the author pasted, and the sources in the config.
 
+**A source that failed is not a source that is absent.** Three outcomes, and they must not be reported the same way:
+
+| | Means | Say |
+|---|---|---|
+| No tooling | The MCP or CLI for that source is not installed | Once, in passing. Nothing can be done in this session. |
+| Errored or refused | Tooling exists but the call failed: expired auth, no access to a private channel, a permission error | **Interrupt.** Name the source and the reason before drafting. |
+| Read, found nothing | The source works and the period was quiet | Normal. Feeds the quiet-period path. |
+
+The middle case is the dangerous one, because the report comes out looking complete. A configured channel nobody could read is exactly where the risks were. In testing, a Slack integration reported itself connected and then failed with `invalid_auth` at call time, which would have produced a confident report with the real problem missing from it.
+
+Access is per person, so the same project can produce different reports for different people. When a source is refused rather than broken, say that plainly: "you are not in `#service-xp-inbox`, so anything discussed there is missing from this."
+
 ### 4. Ask what is missing
 
 **One message, at most four questions, most valuable first.** Ask only about core sections with nothing in them, and prioritise sections the previous report had. With no previous report, the order is Metrics, Risks and blockers, Up next, Decisions needed.
@@ -153,6 +184,8 @@ Read `references/confluence.md`. Write the cache first, then publish, then updat
 Reports go under the current year folder, titled `<Project> YYYY-MM-DD`. Create the year folder if it is the first report of the year.
 
 A same-day rerun updates that page, but only if no human has edited it. See the edit rules in `references/confluence.md`.
+
+**Say how to fix it.** After publishing, one line: edit the page directly in Confluence, the skill will not overwrite it, and the next report compares against the corrected version. Otherwise people either re-run the whole thing for a typo or leave the typo there.
 
 ## Rules that hold everywhere
 

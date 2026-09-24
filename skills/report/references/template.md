@@ -118,7 +118,9 @@ Week numbers are ISO, always.
 
 Rows come from the project's `<Project> Metrics` page, which defines each metric's unit, target and source. A metric name alone is ambiguous: "self-service CSAT" can mean an absolute average or an uplift against control, and those are different numbers.
 
-`vs last` is dropped entirely when there is no previous report, when the previous report had no Metrics section, when a metric is new, or when the template version changed. Deltas keep the unit of the value and are never converted. A value that has not moved reads `flat`. When the gap is longer than the cadence implies, the column header names its comparison date.
+**Drop a column rather than showing it empty.** `Target` disappears when no metric has one, which is most projects for a long time, because targets get set later than metrics do. A permanently blank column in every report reads as broken.
+
+`vs last` is dropped entirely when there is no previous report, when the previous report had no Metrics section, when a metric is new, or when the template version changed. On a first report it is simply absent, with nothing said about it. There is no previous period to compare to and the reader can see that. Deltas keep the unit of the value and are never converted. A value that has not moved reads `flat`. When the gap is longer than the cadence implies, the column header names its comparison date.
 
 Lead with the metric that moved.
 

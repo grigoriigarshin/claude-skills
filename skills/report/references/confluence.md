@@ -29,6 +29,7 @@ A table on the project parent page, inside a collapsed expand so a human reading
 | Squad | Report header, metadata token |
 | Lifecycle | `Active` / `Paused` / `Done`. Warn before reporting on a Done project. |
 | Cadence | Period label and gather window |
+| Destination | `Shared` or `Local`. Where reports land. Chosen at setup. |
 | Sources | One per line. Anything: a Slack channel, a JQL filter, a link to a sheet, doc, deck, Drive folder, task list or Confluence page. |
 | Context only | Which of those sources are read but never quoted. See below. |
 | Key metrics | Link to the `<Project> Metrics` page |
@@ -59,6 +60,8 @@ Target: 60% by end of Q3
 Source: SQL
         SELECT ... FROM `project.dataset.table` ...
 ```
+
+**Targets come from the person, never from a source.** Ask for each one at setup and write it down. A number scraped from a deck is somebody's current forecast, not a commitment, and publishing it as a target invents an agreement nobody made. No target is fine: the column disappears.
 
 `Source` is a SQL query, a dashboard link, or `author-supplied`. A dashboard link means the author reads the number off and you ask for it. Run the SQL if the person has warehouse access, otherwise fall back to asking.
 
@@ -129,7 +132,17 @@ This also settles two people running at once: the second finds a body it did not
 └── drafts/<slug>-<date>.md     written before publish, kept 30 days
 ```
 
-A mirror, never a source of truth. Deleting it costs one round trip.
+A mirror for shared projects, never a source of truth there. Deleting it costs one round trip.
+
+For **local** projects the same folder is the only copy, so it is not a mirror and deleting it loses the reports. Local projects add two things:
+
+```
+~/.claude/xp-reporting/
+├── projects/<slug>/config.md      the config, since there is no Confluence page
+└── reports/<slug>-<date>.md       the reports themselves
+```
+
+Nothing else differs. Same shape, same gathering, same review, no publish step and no edit protection, because the file is theirs.
 
 ## Finding things later
 
