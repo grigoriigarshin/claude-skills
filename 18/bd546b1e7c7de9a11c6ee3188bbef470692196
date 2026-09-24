@@ -1,0 +1,21 @@
+docs/report.md
+  s_1c2f441e47bf03::t_5103c023db1546 15
+skills/report/SKILL.md
+  s_1c2f441e47bf03::t_195f6c766cec89 29,32,35,37,39-41,43
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "18bd546b1e7c7de9a11c6ee3188bbef470692196",
+  "prompts": {},
+  "sessions": {
+    "s_1c2f441e47bf03": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5350caf9-8609-4ffb-a4dd-9c87d9621c07",
+        "model": "unknown"
+      },
+      "human_author": "unknown"
+    }
+  }
+}
