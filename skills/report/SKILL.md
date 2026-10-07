@@ -6,7 +6,7 @@ description: >
   a weekly or monthly project report, a squad update, or to set up reporting for a project.
   Triggered by /report, /report new, /report <project>.
 metadata:
-  version: 0.6.0
+  version: 0.7.0
 ---
 
 # report — Project status reports
@@ -194,6 +194,8 @@ A same-day rerun updates that page, but only if no human has edited it. See the 
 **Never infer a fact that no source states.** A gatherer that cannot find an owner returns `who: not stated`, and the report leaves the owner out. Verifying an unknown by checking another source is fine, and you say that you did. Guessing silently is not.
 
 **Never present old news as current.** If a source's newest content predates the period, facts from it carry their date: "CFX share was 21% as of Sep 5". A period where nothing moved still gets a report saying so.
+
+**Never report a problem without reading its resolution.** In a conversation, a top-level message is the question and the thread is the answer. An item is only a risk when the thread has been read and contains no resolution. Four out of five risks in one real run had been resolved in-thread, one of them within eleven minutes.
 
 **Never overwrite a human's edit.** Anything a person changed on a published page stays. Check before touching a page, and when in doubt, do not touch it.
 

@@ -6,7 +6,7 @@ Writes a project status report from your Slack channels, Jira, decks, meeting no
 bash <(gh api repos/grigoriigarshin/claude-skills/contents/install.sh -H "Accept: application/vnd.github.raw") report
 ```
 
-**Current version: 0.6.0.** Check yours with `head -12 ~/.claude/skills/report/SKILL.md`.
+**Current version: 0.7.0.** Check yours with `head -12 ~/.claude/skills/report/SKILL.md`.
 
 ## Update
 
@@ -105,6 +105,8 @@ The order **within** a section is not fixed. The skill ranks items and leads wit
 **It will not fake freshness.** If your sources have nothing new, facts carry their date ("share was 21% as of Sep 5") and a quiet period still gets a report saying nothing moved.
 
 **It reports what is there, never what is missing.** No "N/A", no "owner not stated", no empty headings.
+
+**It reads the thread before calling something a risk.** In a channel, the top-level message is the question and the reply is the answer. A problem only reaches the report once its thread has been read and nobody has resolved it, so you do not get told about fires that were put out the same afternoon.
 
 **It will not invent.** If no source names an owner for a blocker, the report leaves the owner out rather than guessing plausibly.
 

@@ -12,14 +12,16 @@ Newest content: <date of the most recent item found, or "none in window">
 Shipped: <what | when | or "none">
 Status signals: <what | when>
 Numbers: <metric: value | when | UNCONFIRMED if spoken>
-Risks and blockers: <what | who | since when | why | what is needed | or "none">
+Risks and blockers: <what | who | since when | why | what is needed | state | or "none">
 Decisions made: <what | who decided | when | or "none">
-Decisions raised: <what | who raised it | when | or "none">
+Decisions raised: <what | who raised it | when | state | or "none">
 Commitments: <who | what | by when>
 Truncated: <yes, and how much was skipped | no>
 ```
 
 **Every item carries what, who and when, plus why when the source says it.** A blocker returns as `Partner flow adaptation blocked | who: partner eng lead | since: 2026-09-10 | why: no capacity their side | needs: a timeline`, not as "the partner is blocked".
+
+**`state` is `open, thread read` or `resolved: <how, by whom, when>`.** Never `open` on a message whose thread you did not read. If you could not read it, write `unverified` and the drafter will leave it out rather than publish an unchecked claim. Nothing is reported as a risk on the strength of a parent message alone.
 
 **Absent parts are named, never inferred.** This half matters more. Asking for all the fields is how a model invents the missing ones: a message saying "the partner is blocked" names no owner, and a gatherer required to produce one will produce a plausible one. Write `who: not stated` and stop. An invented owner reaching the report as a real name is the same class of failure as an unconfirmed number reaching it as fact.
 
@@ -61,7 +63,13 @@ Metrics are not gathered from this list. Each one has its own source on the proj
 
 ### Slack
 
-Read the channel over the window. Meeting summaries, rollout announcements and escalations are the high-value content. Thread replies matter more than top-level noise.
+Read the channel over the window. Meeting summaries, rollout announcements and escalations are the high-value content.
+
+**Read the thread of every message you intend to report. No exceptions.** A top-level message is a question, a bug report or an announcement. The answer is in the thread, and so is the status. Reporting the parent without the replies systematically turns resolved things into open ones.
+
+This is not a preference. In one real run, five problems were reported from top-level messages and four had been resolved in-thread: one explained as a known gap, one already fixed, one with a fix in PR, and one triaged as not this product's problem within eleven minutes. The report would have told leadership about four fires that were already out, and buried the one that was still burning.
+
+**Use the read format that shows reply counts.** Most Slack tooling has a concise mode that hides whether a message even has a thread, so you cannot tell what you are missing. Use the verbose or detailed format, read the counts, then open every thread that matters. If your tooling cannot show thread metadata, say so and treat every item as unverified.
 
 ### Jira
 
