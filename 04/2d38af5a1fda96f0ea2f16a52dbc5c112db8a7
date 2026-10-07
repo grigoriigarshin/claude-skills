@@ -1,0 +1,23 @@
+docs/report.md
+  s_fcbe5afe768aa2::t_72523e70519627 9,109-110
+skills/report/SKILL.md
+  s_fcbe5afe768aa2::t_ca3e87a0591612 9,198-199
+skills/report/references/gatherers.md
+  s_fcbe5afe768aa2::t_16b23e527194bc 15,17,24-25,66-72
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.15",
+  "base_commit_sha": "042d38af5a1fda96f0ea2f16a52dbc5c112db8a7",
+  "prompts": {},
+  "sessions": {
+    "s_fcbe5afe768aa2": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "bd92d4e6-6f40-4c20-9783-415025469105",
+        "model": "unknown"
+      },
+      "human_author": "unknown"
+    }
+  }
+}
